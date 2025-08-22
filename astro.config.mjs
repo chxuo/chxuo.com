@@ -6,10 +6,20 @@ import tailwindcss from "@tailwindcss/vite";
 
 import icon from "astro-icon";
 
+import expressiveCode from "astro-expressive-code";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://chxuo.com",
-  integrations: [sitemap(), mdx(), pagefind(), icon()],
+  integrations: [
+    sitemap(),
+    pagefind(),
+    icon(),
+    expressiveCode({
+      themes: ['tokyo-night', 'github-light'],
+    }),
+    mdx()
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
