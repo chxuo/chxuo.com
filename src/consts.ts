@@ -23,6 +23,11 @@ export const PROJECTS: Metadata = {
   DESCRIPTION: "做的一些小玩意儿",
 };
 
+export const TOOLS: Metadata = {
+  TITLE: "装备库",
+  DESCRIPTION: "日常使用的一些工具，包括开发工具和其他软硬件",
+}
+
 export const SOCIALS: Socials = [
   {
     NAME: "GitHub",

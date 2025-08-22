@@ -1,0 +1,83 @@
+[
+    {
+        "id": "development",
+        "category": "开发环境",
+        "description": "用于编程开发的生产力工具",
+        "items": [
+            {
+                "name": "VS Code",
+                "description": "常用代码编辑器",
+                "url": "https://code.visualstudio.com",
+                "image": "./images/uses/development/code.webp"
+            },
+            {
+                "name": "Kitty Terminal",
+                "description": "好用且高性能的终端模拟器",
+                "url": "https://sw.kovidgoyal.net/kitty/",
+                "image": "./images/uses/development/kitty.svg"
+            },
+            {
+                "name": "OrbStack",
+                "description": "轻量级容器和虚拟机软件",
+                "url": "https://orbstack.dev/",
+                "image": "./images/uses/development/orbstack.png"
+            }
+        ]
+    },
+    {
+        "id": "hardware",
+        "category": "硬件设备",
+        "description": "我日常使用的硬件设备",
+        "items": [
+            {
+                "name": "Macmini",
+                "description": "M2，16GBRAM，1TBSSD-主力开发机器",
+                "url": "https://support.apple.com/zh-cn/111837",
+                "image": "./images/uses/hardware/mac-mini.webp"
+            },
+            {
+                "name": "PMOWAVE75",
+                "description": "75配列，黑曜石配色",
+                "url": "http://www.pmolab.cn/",
+                "image": "./images/uses/hardware/wave75.webp"
+            },
+            {
+                "name": "ROG月刃无线版",
+                "description": "用着还行",
+                "url": "https://rog.asus.com.cn/mice-mouse-pads/mice/ergonomic-right-handed/rog-keris-wireless-aimpoint-model/",
+                "image": "./images/uses/hardware/rog-mouse.webp"
+            }
+        ]
+    },
+    {
+        "id": "software",
+        "category": "软件应用",
+        "description": "经常使用的应用程序",
+        "items": [
+            {
+                "name": "CleanShotX",
+                "description": "Mac上强大好用的截图工具",
+                "url": "https://cleanshot.com/",
+                "image": "./images/uses/software/cleanshot-x.png"
+            },
+            {
+                "name": "Raycast",
+                "description": "通往一切的捷径",
+                "url": "https://www.raycast.com/",
+                "image": "./images/uses/software/raycast.webp"
+            },
+            {
+                "name": "PicGo",
+                "description": "图片上传压缩管理一站式",
+                "url": "https://molunerfinn.com/PicGo/",
+                "image": "./images/uses/software/picgo.png"
+            },
+            {
+                "name": "Mos",
+                "description": "更符合使用习惯的鼠标增强工具",
+                "url": "https://mos.caldis.me/",
+                "image": "./images/uses/software/mos.webp"
+            }
+        ]
+    }
+]
