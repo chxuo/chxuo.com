@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 interface Props {
   date: Date;
 }
@@ -6,12 +8,13 @@ interface Props {
 const { date } = Astro.props;
 ---
 
-<time datetime={date.toISOString()}>
+<time datetime={date.toISOString()} class="flex items-center gap-1">
+  <Icon name="mingcute:time-line" />
   {
-    date.toLocaleDateString("en-US", {
-      month: "long",
-      day: "2-digit",
+    date.toLocaleDateString("zh-CN", {
       year: "numeric",
+      month: "long",
+      day: "numeric",
     })
   }
 </time>

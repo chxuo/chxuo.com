@@ -28,6 +28,11 @@ export const TOOLS: Metadata = {
   DESCRIPTION: "日常使用的一些工具，包括开发工具和其他软硬件",
 }
 
+export const FRIENDS: Metadata = {
+  TITLE: "朋友们",
+  DESCRIPTION: "志同道合的朋友们，一起在互联网上创造有趣的内容",
+}
+
 export const SOCIALS: Socials = [
   {
     NAME: "GitHub",

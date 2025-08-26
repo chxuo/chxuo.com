@@ -1,0 +1,138 @@
+---
+interface Props {
+  headings: {
+    depth: number;
+    slug: string;
+    text: string;
+  }[];
+}
+
+const { headings } = Astro.props;
+
+// Filter headings to only include h2 and h3
+const tocHeadings = headings.filter(h => h.depth <= 3);
+---
+
+{tocHeadings.length > 1 && (
+  <div
+    id="floating-toc"
+    class="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 transform opacity-0 transition-all duration-300 lg:block"
+  >
+    <div class="max-h-96 w-64 overflow-y-auto rounded-lg border border-black/10 bg-white/90 p-4 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-black/90">
+      <h3 class="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-100">
+        目录
+      </h3>
+      <nav>
+        <ul class="space-y-2">
+          {tocHeadings.map((heading) => (
+            <li class={`${heading.depth === 3 ? 'ml-4' : ''}`}>
+              <a
+                href={`#${heading.slug}`}
+                class="toc-link block text-sm text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-200"
+                data-slug={heading.slug}
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      
+      <!-- Progress indicator -->
+      <div class="mt-4 h-1 w-full bg-gray-200 rounded-full dark:bg-gray-700">
+        <div
+          id="reading-progress"
+          class="h-1 bg-blue-500 rounded-full transition-all duration-300"
+          style="width: 0%"
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    function initFloatingTOC() {
+      const floatingToc = document.getElementById('floating-toc');
+      const tocLinks = document.querySelectorAll('.toc-link');
+      const readingProgress = document.getElementById('reading-progress');
+      
+      if (!floatingToc || !tocLinks.length) return;
+
+      const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+        .filter(h => h.id);
+
+      // Show/hide floating TOC based on scroll position
+      let ticking = false;
+      function updateTOC() {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            
+            // Show TOC after scrolling past the first screen
+            if (scrollY > windowHeight * 0.3) {
+              floatingToc.classList.remove('opacity-0');
+              floatingToc.classList.add('opacity-100');
+            } else {
+              floatingToc.classList.add('opacity-0');
+              floatingToc.classList.remove('opacity-100');
+            }
+
+            // Update reading progress
+            const progress = (scrollY / (documentHeight - windowHeight)) * 100;
+            readingProgress.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+
+            // Highlight current section
+            let currentHeading = '';
+            for (let i = headings.length - 1; i >= 0; i--) {
+              const heading = headings[i];
+              if (heading.offsetTop <= scrollY + 100) {
+                currentHeading = heading.id;
+                break;
+              }
+            }
+
+            // Update active link
+            tocLinks.forEach(link => {
+              link.classList.remove('text-blue-600', 'dark:text-blue-400', 'font-medium');
+              link.classList.add('text-gray-600', 'dark:text-gray-400');
+              
+              if (link.dataset.slug === currentHeading) {
+                link.classList.remove('text-gray-600', 'dark:text-gray-400');
+                link.classList.add('text-blue-600', 'dark:text-blue-400', 'font-medium');
+              }
+            });
+            
+            ticking = false;
+          });
+        }
+        ticking = true;
+      }
+
+      // Smooth scroll to section when clicking TOC links
+      tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').slice(1);
+          const targetElement = document.getElementById(targetId);
+          
+          if (targetElement) {
+            const offsetTop = targetElement.offsetTop - 100; // Account for header
+            window.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+
+      // Initialize and listen to scroll events
+      window.addEventListener('scroll', updateTOC, { passive: true });
+      updateTOC(); // Initial call
+    }
+
+    // Initialize on page load and after navigation
+    document.addEventListener('DOMContentLoaded', initFloatingTOC);
+    document.addEventListener('astro:after-swap', initFloatingTOC);
+  </script>
+)}

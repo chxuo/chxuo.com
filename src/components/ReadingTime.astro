@@ -1,0 +1,31 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  content?: string;
+  class?: string;
+}
+
+const { content = "", class: className = "" } = Astro.props;
+
+function getReadingTime(html: string) {
+  const textOnly = html.replace(/<[^>]+>/g, "");
+  const chineseChars = textOnly.match(/[\u4e00-\u9fa5]/g) || [];
+  const englishWords = textOnly.replace(/[\u4e00-\u9fa5]/g, "").split(/\s+/).filter(word => word.length > 0);
+  
+  // 中文阅读速度约 300 字/分钟，英文约 200 词/分钟
+  const chineseReadingTime = chineseChars.length / 300;
+  const englishReadingTime = englishWords.length / 200;
+  
+  const totalMinutes = Math.max(1, Math.ceil(chineseReadingTime + englishReadingTime));
+  
+  return totalMinutes;
+}
+
+const minutes = getReadingTime(content);
+---
+
+<span class={`flex items-center gap-1 ${className}`}>
+  <Icon name="mingcute:book-6-line" />
+  {minutes} 分钟阅读
+</span>

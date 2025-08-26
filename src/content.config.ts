@@ -38,4 +38,14 @@ const tools = defineCollection({
   })
 })
 
-export const collections = { blog, projects, tools };
+const friends = defineCollection({
+  loader: file("./src/content/friends.json"),
+  schema: z.object({
+    name: z.string(),
+    url: z.string().url(),
+    description: z.string().optional(),
+    avatar: z.string().url().optional(),
+  })
+})
+
+export const collections = { blog, projects, tools, friends };
