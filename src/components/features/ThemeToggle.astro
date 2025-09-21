@@ -1,0 +1,46 @@
+---
+import { Moon, Sun } from "@lucide/astro";
+---
+
+<div
+  id="theme-toggle"
+  class="mr-0 inline-flex cursor-pointer items-center justify-center rounded-md p-2 text-foreground hover:bg-accent hover:text-accent-foreground"
+>
+  <Sun id="sun-icon" class="dark:hidden" />
+  <Moon id="moon-icon" class="hidden dark:block" />
+</div>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const theme = (() => {
+      if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+        return localStorage.getItem("theme");
+      }
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        return "dark";
+      }
+      return "light";
+    })();
+
+    if (theme === "light") {
+      document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+    }
+
+    window.localStorage.setItem("theme", theme || "dark");
+
+    const handleToggleClick = () => {
+      const element = document.documentElement;
+      element.classList.toggle("dark");
+
+      const isDark = element.classList.contains("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    };
+
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      themeToggle.onclick = handleToggleClick;
+    }
+  });
+</script>

@@ -1,0 +1,38 @@
+---
+import type { NavItem } from "@/types";
+
+export interface Props {
+  items: NavItem[];
+  currentPath: string;
+}
+
+const { items, currentPath } = Astro.props;
+---
+
+<div id="mobile-menu" class="hidden md:hidden">
+  <!-- border-t border-border -->
+  <nav class="list-none bg-background px-4 pt-2 pb-4">
+    {
+      items.map((item) => {
+        const isActive = currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href));
+
+        return (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                "block rounded-md px-3 py-2 text-base font-medium transition-colors",
+                isActive
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+              ]}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {item.name}
+            </a>
+          </li>
+        );
+      })
+    }
+  </nav>
+</div>

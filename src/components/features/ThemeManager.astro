@@ -1,0 +1,18 @@
+---
+type Props = {
+  defaultTheme?: "auto" | "dark" | "light" | undefined;
+};
+
+const { defaultTheme = "auto" } = Astro.props;
+---
+
+<script is:inline data-default-theme={defaultTheme}>
+  function applyTheme() {
+    localStorage.theme === "dark"
+      ? document.documentElement.classList.add("dark")
+      : document.documentElement.classList.remove("dark");
+  }
+
+  document.addEventListener("astro:after-swap", applyTheme);
+  applyTheme();
+</script>

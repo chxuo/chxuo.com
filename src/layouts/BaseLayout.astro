@@ -3,7 +3,8 @@ import BaseHead from "@/components/BaseHead.astro";
 import type { HeadProps } from "@/types";
 import { ClientRouter } from "astro:transitions";
 import "@/styles/global.css";
-import ThemeManager from "@/components/ThemeManager.astro";
+import ThemeManager from "@/components/features/ThemeManager.astro";
+import Header from "@/components/layout/Header.astro";
 
 type Props = HeadProps;
 
@@ -16,7 +17,8 @@ const headProps = Astro.props;
     <ClientRouter />
     <ThemeManager />
   </head>
-  <body>
+  <body class="bg-background font-sans leading-relaxed text-foreground">
+    <Header />
     <slot />
   </body>
 </html>
