@@ -1,0 +1,27 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Badge from "@/components/ui/Badge.astro";
+import Container from "@/components/layout/Container.astro";
+import { siteConfig } from "@/config";
+---
+
+<section class="py-16 sm:py-24">
+  <Container size="sm" class="mx-auto max-w-3xl text-center">
+    <Badge variant="secondary" class="mb-4 rounded-xl px-3 py-1"> 🚀 业余全栈开发者 </Badge>
+
+    <h1 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+      {siteConfig.author}
+    </h1>
+
+    <p class="mt-4 text-lg text-muted-foreground">
+      热衷于用代码解决问题，创造有价值的产品。
+      <br />
+      目前专注于现代 Web 技术栈和用户体验优化。
+    </p>
+
+    <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-6">
+      <Button href="/blog"> 查看博客 </Button>
+      <Button variant="outline" href="/about"> 关于我 </Button>
+    </div>
+  </Container>
+</section>

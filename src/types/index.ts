@@ -1,7 +1,9 @@
+import type { icons } from "@lucide/astro";
+
 interface Link {
   name: string;
   href: string;
-  icon?: string;
+  icon?: keyof typeof icons;
   external?: boolean;
 }
 

@@ -1,0 +1,14 @@
+---
+import Button from "@/components/ui/Button.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="找不到了" description="404 Not Found">
+  <div class="h-100% flex w-full flex-col items-center justify-center gap-10">
+    <h1 class="mt-50">找不到了</h1>
+    <div class="flex gap-4">
+      <Button variant="primary" type="button" href="/">回到主页</Button>
+      <Button variant="outline" type="button" href="/blog">查看博客</Button>
+    </div>
+  </div>
+</BaseLayout>

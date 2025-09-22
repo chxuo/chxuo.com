@@ -5,6 +5,7 @@ import { ClientRouter } from "astro:transitions";
 import "@/styles/global.css";
 import ThemeManager from "@/components/features/ThemeManager.astro";
 import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
 
 type Props = HeadProps;
 
@@ -17,8 +18,11 @@ const headProps = Astro.props;
     <ClientRouter />
     <ThemeManager />
   </head>
-  <body class="bg-background font-sans leading-relaxed text-foreground">
+  <body class="flex min-h-screen flex-col bg-background font-sans leading-relaxed text-foreground">
     <Header />
-    <slot />
+    <main class="h-100% flex-1">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

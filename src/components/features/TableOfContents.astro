@@ -1,0 +1,18 @@
+---
+import { buildToc } from "@/utils/toc";
+import type { MarkdownHeading } from "astro";
+import TableOfContentsHeading from "./TableOfContentsHeading.astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+const toc = buildToc(headings);
+---
+
+<nav class="toc">
+  <ul>
+    {toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
+  </ul>
+</nav>

@@ -6,18 +6,19 @@ const blog = defineCollection({
     pattern: "**/*.{md,mdx}",
     base: "./src/content/blog",
   }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    pubDate: z.coerce.date(),
-    updatedDate: z.coerce.date().optional(),
-    author: z.string().default("chxuo"),
-    tags: z.array(z.string()).optional().default([]),
-    draft: z.boolean().default(false),
-    featured: z.boolean().default(false),
-    image: z.string().optional(),
-    imageAlt: z.string().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      pubDate: z.coerce.date(),
+      updatedDate: z.coerce.date().optional(),
+      author: z.string().default("chxuo"),
+      tags: z.array(z.string()).optional().default([]),
+      draft: z.boolean().default(false),
+      featured: z.boolean().default(false),
+      image: image().optional(),
+      imageAlt: z.string().optional(),
+    }),
 });
 
 const projects = defineCollection({

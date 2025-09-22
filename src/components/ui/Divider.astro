@@ -1,0 +1,24 @@
+---
+export interface Props {
+  orientation?: "horizontal" | "vertical";
+  text?: string;
+  class?: string;
+}
+
+const { orientation = "horizontal", text, class: className = "" } = Astro.props;
+
+const dividerClass =
+  orientation === "horizontal" ? `w-full h-px bg-border ${className}` : `h-full w-px bg-border ${className}`;
+---
+
+{
+  text ? (
+    <div class={`flex items-center gap-4 ${orientation === "horizontal" ? "w-full" : "h-full"}`}>
+      <div class={`flex-1 ${dividerClass}`} />
+      <span class="px-2 text-sm text-muted-foreground">{text}</span>
+      <div class={`flex-1 ${dividerClass}`} />
+    </div>
+  ) : (
+    <div class={dividerClass} />
+  )
+}

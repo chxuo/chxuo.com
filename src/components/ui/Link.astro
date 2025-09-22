@@ -1,0 +1,27 @@
+---
+import { ExternalLink } from "@lucide/astro";
+
+export interface Props {
+  href: string;
+  external?: boolean;
+  underline?: boolean;
+  class?: string;
+  [key: string]: any;
+}
+
+const { href, external = false, underline = true, class: className = "", ...rest } = Astro.props;
+const linkProps = external ? { target: "_blank", rel: "noopener noreferrer", ...rest } : rest;
+---
+
+<a
+  href={href}
+  class:list={[
+    "inline-flex items-center gap-1 text-primary transition-colors hover:text-primary/80",
+    underline ? "underline underline-offset-4" : "no-underline",
+    className,
+  ]}
+  {...linkProps}
+>
+  <slot />
+  {external && <ExternalLink />}
+</a>

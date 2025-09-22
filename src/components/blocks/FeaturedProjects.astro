@@ -1,0 +1,35 @@
+---
+import { getFeaturedProjects } from "@/utils/content";
+import Button from "../ui/Button.astro";
+import ProjectPreview from "./ProjectPreview.astro";
+import Container from "../layout/Container.astro";
+import { FolderKanban } from "@lucide/astro";
+
+const featuredProjects = await getFeaturedProjects();
+---
+
+<section class="py-6 sm:py-12">
+  <Container size="sm">
+    <div class="mb-4 flex items-center gap-4">
+      <FolderKanban />
+      <div>
+        <h3 class="font-semibold">精选项目</h3>
+        <p class="text-sm text-muted-foreground">查看我的最新作品</p>
+      </div>
+    </div>
+    <div>
+      {
+        featuredProjects.length > 0 ? (
+          <>
+            {featuredProjects.map((project) => (
+              <ProjectPreview project={project} />
+            ))}
+          </>
+        ) : (
+          <div>Empty</div>
+        )
+      }
+    </div>
+    <Button href="/projects" variant="outline" class="w-full"> 浏览所有项目 </Button>
+  </Container>
+</section>

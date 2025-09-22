@@ -1,0 +1,23 @@
+---
+import MDImage from "@/components/features/MDImage.astro";
+import MDLink from "@/components/features/MDLink.astro";
+import PostLayout from "@/layouts/PostLayout.astro";
+import { getBlog } from "@/utils/content";
+import type { GetStaticPaths } from "astro";
+import { render } from "astro:content";
+
+export const getStaticPaths = (async () => {
+  const posts = await getBlog();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+---
+
+<PostLayout post={post} headings={headings}>
+  <Content components={{ a: MDLink, img: MDImage }} />
+</PostLayout>

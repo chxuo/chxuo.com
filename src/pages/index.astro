@@ -1,9 +1,13 @@
 ---
-import ThemeToggle from "@/components/features/ThemeToggle.astro";
+import FeaturedProjects from "@/components/blocks/FeaturedProjects.astro";
+import Hero from "@/components/blocks/Hero.astro";
+import LatestBlog from "@/components/blocks/LatestBlog.astro";
 import { siteConfig } from "@/config";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title={siteConfig.title} description={siteConfig.description}>
-  <h1>Astro</h1>
+  <Hero />
+  <LatestBlog />
+  <FeaturedProjects />
 </BaseLayout>

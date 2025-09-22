@@ -1,0 +1,36 @@
+---
+import { getLatestBlog } from "@/utils/content";
+import Container from "../layout/Container.astro";
+import BlogPreview from "@/components/blocks/BlogPreview.astro";
+import Button from "../ui/Button.astro";
+import { Newspaper } from "@lucide/astro";
+
+const latestBlog = await getLatestBlog();
+---
+
+<section class="py-6 sm:py-12">
+  <Container size="sm">
+    <div class="mb-4 flex items-center gap-4">
+      <Newspaper />
+      <div>
+        <h3 class="font-semibold">技术博客</h3>
+        <p class="text-sm text-muted-foreground">一些有趣或者有用的内容</p>
+      </div>
+    </div>
+
+    <div>
+      {
+        latestBlog.length > 0 ? (
+          <>
+            {latestBlog.map((blog) => (
+              <BlogPreview blog={blog} />
+            ))}
+          </>
+        ) : (
+          <div>Empty</div>
+        )
+      }
+    </div>
+    <Button href="/blog" variant="outline" class="w-full"> 查看更多博客 </Button>
+  </Container>
+</section>

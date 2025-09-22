@@ -1,0 +1,29 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  blog: CollectionEntry<"blog">;
+}
+
+const { blog } = Astro.props;
+---
+
+<a href={`/blog/${blog.id}`} class="my-3 flex gap-5 rounded-md p-5 hover:bg-muted">
+  {
+    blog.data.image && (
+      <Image
+        loading="eager"
+        class="h-20 w-20 rounded-md object-cover"
+        width={200}
+        height={200}
+        src={blog.data.image}
+        alt={blog.data.imageAlt || blog.data.title}
+      />
+    )
+  }
+  <div class="space-y-1">
+    <h2 class="text-xl font-medium">{blog.data.title}</h2>
+    <p>{blog.data.description}</p>
+  </div>
+</a>

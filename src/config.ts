@@ -9,10 +9,12 @@ export const siteConfig: SiteConfig = {
     {
       name: "email",
       href: "hi@chxuo.com",
+      icon: "Mail",
     },
     {
       name: "github",
       href: "https://github.com/chxuo",
+      icon: "Github",
     },
   ],
 };
