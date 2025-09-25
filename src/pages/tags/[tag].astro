@@ -1,0 +1,72 @@
+---
+import BlogPreview from "@/components/blocks/BlogPreview.astro";
+import Container from "@/components/layout/Container.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getBlog } from "@/utils/content";
+import { ArrowLeft, Hash } from "@lucide/astro";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (async () => {
+  const posts = await getBlog();
+  const uniqueTags = new Set<string>();
+
+  // 收集所有标签
+  posts.forEach((post) => {
+    post.data.tags?.forEach((tag) => uniqueTags.add(tag));
+  });
+
+  // 为每个标签生成路径
+  return Array.from(uniqueTags).map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: posts.filter((post) => post.data.tags?.includes(tag)),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout title={`标签: ${tag}`} description={`标签 ${tag} 下的所有文章`}>
+  <section class="py-16 sm:py-24">
+    <Container size="sm">
+      <!-- Page Header -->
+      <div class="mb-10">
+        <!-- 返回链接 -->
+        <a
+          href="/blog"
+          class="mb-6 inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft class="h-4 w-4" />
+          <span>返回博客</span>
+        </a>
+
+        <div class="mb-2 flex items-center gap-2">
+          <Hash class="h-5 w-5 text-muted-foreground" />
+          <h1 class="text-2xl font-bold">{tag}</h1>
+        </div>
+        <p class="text-muted-foreground">
+          共 {posts.length} 篇相关文章
+        </p>
+      </div>
+
+      <!-- Posts List -->
+      {
+        posts.length > 0 ? (
+          <div class="space-y-0">
+            {posts.map((item) => (
+              <BlogPreview blog={item} />
+            ))}
+          </div>
+        ) : (
+          <div class="rounded-xl border border-dashed border-border py-16 text-center">
+            <div class="space-y-3">
+              <p class="text-muted-foreground">该标签下暂无文章</p>
+            </div>
+          </div>
+        )
+      }
+    </Container>
+  </section>
+</BaseLayout>

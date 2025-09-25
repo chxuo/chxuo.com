@@ -1,14 +1,37 @@
 ---
-import Button from "@/components/ui/Button.astro";
+import Container from "@/components/layout/Container.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { House, ArrowLeft } from "@lucide/astro";
 ---
 
-<BaseLayout title="找不到了" description="404 Not Found">
-  <div class="h-100% flex w-full flex-col items-center justify-center gap-10">
-    <h1 class="mt-50">找不到了</h1>
-    <div class="flex gap-4">
-      <Button variant="primary" type="button" href="/">回到主页</Button>
-      <Button variant="outline" type="button" href="/blog">查看博客</Button>
-    </div>
-  </div>
+<BaseLayout title="404 - 页面未找到" description="页面不存在">
+  <section class="flex min-h-[calc(100vh-8rem)] items-center py-16">
+    <Container size="sm" class="text-center">
+      <!-- 简约的404显示 -->
+      <div class="mb-8">
+        <h1 class="mb-4 text-6xl font-bold text-muted-foreground">404</h1>
+        <p class="mb-2 text-lg text-foreground">页面走丢了</p>
+        <p class="text-muted-foreground">您访问的页面不存在</p>
+      </div>
+
+      <!-- 简单的操作按钮 -->
+      <div class="flex justify-center gap-4">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <House class="h-4 w-4" />
+          <span>回到首页</span>
+        </a>
+        <span class="text-muted-foreground/30">·</span>
+        <a
+          href="javascript:history.back()"
+          class="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft class="h-4 w-4" />
+          <span>返回</span>
+        </a>
+      </div>
+    </Container>
+  </section>
 </BaseLayout>

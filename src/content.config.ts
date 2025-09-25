@@ -1,5 +1,5 @@
 import { defineCollection, z } from "astro:content";
-import { glob } from "astro/loaders";
+import { glob, file } from "astro/loaders";
 
 const blog = defineCollection({
   loader: glob({
@@ -36,7 +36,7 @@ const projects = defineCollection({
     featured: z.boolean().default(false),
     display: z.boolean().default(true), // 控制是否显示
     status: z
-      .enum(["planning", "in-progress", "completed", "maintained"])
+      .enum(["planning", "in-progress", "completed", "archived"])
       .default("completed"),
     image: z.string().optional(),
     imageAlt: z.string().optional(),
@@ -44,25 +44,24 @@ const projects = defineCollection({
 });
 
 const tools = defineCollection({
-  loader: glob({
-    pattern: "**/*.{md,mdx}",
-    base: "./src/content/tools",
-  }),
-  schema: z.object({
-    name: z.string(),
-    description: z.string(),
-    category: z.enum([
-      "development",
-      "design",
-      "productivity",
-      "hardware",
-      "utility",
-    ]),
-    type: z.enum(["software", "hardware"]),
-    link: z.string().url().optional(),
-    icon: z.string().optional(), // Lucide icon name
-    featured: z.boolean().default(false),
-  }),
+  loader: file("./src/content/tools/data.json"),
+  schema: ({ image }) =>
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      order: z.number(),
+      tools: z.array(
+        z.object({
+          name: z.string(),
+          description: z.string(),
+          subcategory: z.string().optional(),
+          url: z.string().url(),
+          image: image().optional(),
+          recommended: z.boolean().default(false),
+        }),
+      ),
+    }),
 });
 
 const friends = defineCollection({

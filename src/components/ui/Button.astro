@@ -5,7 +5,10 @@ export interface Props {
   href?: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  loading?: boolean;
+  external?: boolean;
   class?: string;
+  "aria-label"?: string;
   [key: string]: any;
 }
 
@@ -15,32 +18,184 @@ const {
   href,
   type = "button",
   disabled = false,
+  loading = false,
+  external = false,
   class: className = "",
+  "aria-label": ariaLabel,
   ...rest
 } = Astro.props;
 
+// Enhanced base classes with better accessibility and animations
 const baseClass =
-  "inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
+  "btn-enhanced inline-flex items-center justify-center font-medium relative overflow-hidden transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95 rounded-md";
 
+// Enhanced variant classes with better hover states
 const variantClass = {
-  primary: "bg-primary text-primary-foreground hover:bg-primary/90",
-  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-  outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-  ghost: "hover:bg-accent hover:text-accent-foreground",
-  destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+  primary:
+    "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md hover:shadow-primary/25 focus-visible:ring-primary/30",
+  secondary:
+    "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-md focus-visible:ring-secondary/30",
+  outline:
+    "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-accent-foreground/50 focus-visible:ring-accent/30",
+  ghost: "hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:ring-accent/30",
+  destructive:
+    "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:shadow-md hover:shadow-destructive/25 focus-visible:ring-destructive/30",
 };
 
 const sizeClass = {
-  sm: "h-8 px-3 text-xs rounded-md",
-  md: "h-10 px-4 py-2 text-sm rounded-md",
-  lg: "h-11 px-8 text-base rounded-md",
-  icon: "h-10 w-10 rounded-md",
+  sm: "h-8 px-3 text-xs gap-1.5",
+  md: "h-10 px-4 py-2 text-sm gap-2",
+  lg: "h-11 px-8 text-base gap-2",
+  icon: "h-10 w-10 p-0",
 };
 
+// Determine if it's an external link
+const isExternal = href && (href.startsWith("http") || external);
+
+// Enhanced element properties with proper accessibility
 const Element = href ? "a" : "button";
-const elementProps = href ? { href, ...rest } : { type, disabled, ...rest };
+const elementProps = href
+  ? {
+      href,
+      ...(isExternal && {
+        target: "_blank",
+        rel: "noopener noreferrer",
+        "aria-label": ariaLabel || `${rest["aria-label"] || "打开链接"} (在新窗口中打开)`,
+      }),
+      ...(!isExternal && { "aria-label": ariaLabel }),
+      ...rest,
+    }
+  : {
+      type,
+      disabled: disabled || loading,
+      "aria-label": ariaLabel,
+      "aria-busy": loading ? "true" : undefined,
+      ...rest,
+    };
+
+// Loading state class
+const loadingClass = loading ? "cursor-not-allowed" : "";
 ---
 
-<Element class:list={[baseClass, variantClass[variant], sizeClass[size], className]} {...elementProps}>
-  <slot />
+<Element class:list={[baseClass, variantClass[variant], sizeClass[size], loadingClass, className]} {...elementProps}>
+  <!-- Loading spinner -->
+  {
+    loading && (
+      <svg
+        class="mr-2 h-4 w-4 animate-spin"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 0 1 4 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        />
+      </svg>
+    )
+  }
+
+  <!-- Button content -->
+  <span class={loading ? "opacity-70" : ""}>
+    <slot />
+  </span>
+
+  <!-- External link indicator -->
+  {
+    isExternal && !loading && (
+      <svg
+        class="ml-1 h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <path d="M7 17L17 7" />
+        <path d="M7 7h10v10" />
+      </svg>
+    )
+  }
+
+  <!-- Shimmer effect on hover -->
+  <div
+    class="btn-shimmer absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full"
+  >
+  </div>
 </Element>
+
+<style>
+  .btn-enhanced {
+    position: relative;
+    transform-origin: center;
+  }
+
+  .btn-enhanced:hover .btn-shimmer {
+    animation: shimmer 0.7s ease-out;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Enhanced focus styles for better visibility */
+  .btn-enhanced:focus-visible {
+    transform: translateY(-1px);
+    box-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.1),
+      0 0 0 2px hsl(var(--background)),
+      0 0 0 4px hsl(var(--ring));
+  }
+
+  /* Active state with micro-interaction */
+  .btn-enhanced:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 0.1s;
+  }
+
+  /* Disabled state improvements */
+  .btn-enhanced:disabled {
+    cursor: not-allowed;
+    filter: grayscale(0.3);
+  }
+
+  /* Loading state */
+  .btn-enhanced[aria-busy="true"] {
+    cursor: wait;
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-enhanced {
+      transition: none;
+    }
+
+    .btn-enhanced:focus-visible {
+      transform: none;
+    }
+
+    .btn-enhanced:active {
+      transform: none;
+    }
+
+    .btn-shimmer {
+      display: none;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .btn-enhanced {
+      border: 2px solid;
+    }
+  }
+</style>

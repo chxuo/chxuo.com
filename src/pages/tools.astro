@@ -1,0 +1,114 @@
+---
+import Container from "@/components/layout/Container.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { ExternalLink, Star } from "@lucide/astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
+// 从 content collection 获取工具数据
+const toolCategories = await getCollection("tools");
+
+// 按 order 排序分类
+const sortedCategories = toolCategories.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="工具" description="我日常使用的一些工具和软件">
+  <section class="py-16 sm:py-24">
+    <Container size="sm">
+      <!-- Page header -->
+      <div class="mb-10">
+        <h1 class="mb-2 text-2xl font-bold">工具箱</h1>
+        <p class="text-muted-foreground">分享一些提高效率的工具</p>
+      </div>
+
+      <!-- Tools by category -->
+      <div class="space-y-10">
+        {
+          sortedCategories.map((category) => (
+            <div>
+              <div class="mb-6">
+                <h2 class="text-lg font-semibold text-foreground">{category.data.name}</h2>
+                <p class="mt-1 text-sm text-muted-foreground">{category.data.description}</p>
+              </div>
+
+              <div class="grid gap-4 sm:grid-cols-2">
+                {category.data.tools.map((tool) => (
+                  <article class="tool-card group">
+                    <a
+                      href={tool.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="block h-full rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:shadow-sm"
+                    >
+                      <div class="flex gap-3">
+                        <div class="flex-shrink-0">
+                          {tool.image?.src && (
+                            <div class="rounded-xl bg-secondary p-2">
+                              <Image
+                                src={tool.image}
+                                alt={tool.name}
+                                height={40}
+                                class="h-10 w-10 text-muted-foreground transition-colors group-hover:text-primary"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        <div class="flex min-w-0 flex-1 flex-col">
+                          <div class="mb-2 flex items-start justify-between gap-2">
+                            <div class="flex min-w-0 items-center gap-2">
+                              <h3 class="truncate font-medium text-foreground transition-colors group-hover:text-primary">
+                                {tool.name}
+                              </h3>
+                              {tool.recommended && (
+                                <Star class="h-3.5 w-3.5 flex-shrink-0 fill-yellow-500 text-yellow-500" />
+                              )}
+                            </div>
+                            <ExternalLink class="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground/50 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
+                          </div>
+
+                          {tool.subcategory && (
+                            <div class="mb-2">
+                              <span class="inline-block rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                                {tool.subcategory}
+                              </span>
+                            </div>
+                          )}
+
+                          <p class="text-sm text-muted-foreground">{tool.description}</p>
+                        </div>
+                      </div>
+                    </a>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- Footer note -->
+      <div class="mt-12 border-t border-border pt-8">
+        <p class="text-center text-sm text-muted-foreground">
+          <Star class="inline h-3.5 w-3.5 fill-yellow-500 text-yellow-500" /> 表示特别推荐
+        </p>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
+
+<style>
+  .tool-card {
+    transition: transform 0.2s ease;
+  }
+
+  .tool-card:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 640px) {
+    .tool-card:hover {
+      transform: none;
+    }
+  }
+</style>

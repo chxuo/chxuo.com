@@ -1,0 +1,90 @@
+[
+  {
+    "id": "development",
+    "name": "开发工具",
+    "description": "编码、调试、版本管理等开发相关工具",
+    "order": 1,
+    "tools": [
+      {
+        "name": "Visual Studio Code",
+        "description": "主力的代码编辑器，配合各种插件使用体验极佳",
+        "subcategory": "编辑器",
+        "url": "https://code.visualstudio.com/",
+        "image": "./images/vscode.svg",
+        "recommended": true
+      },
+      {
+        "name": "Zed",
+        "description": "号称下一代代码编辑器，也很好用跟AI配合的很好",
+        "subcategory": "编辑器",
+        "url": "https://zed.dev/",
+        "image": "./images/zed.svg",
+        "recommended": true
+      },
+      {
+        "name": "Ghostty",
+        "description": "很好用的跨平台终端模拟器",
+        "subcategory": "终端",
+        "url": "https://ghostty.org/",
+        "image": "./images/ghostty.svg",
+        "recommended": true
+      }
+    ]
+  },
+  {
+    "id": "productivity",
+    "name": "效率工具",
+    "description": "提高工作效率和生产力的工具",
+    "order": 2,
+    "tools": [
+      {
+        "name": "Raycast",
+        "description": "Mac 上的效率神器，替代 Spotlight，各种快捷操作",
+        "subcategory": "快捷启动",
+        "url": "https://www.raycast.com/",
+        "image": "./images/raycast.svg",
+        "recommended": true
+      },
+      {
+        "name": "Obsidian",
+        "description": "用来记笔记和构建知识库，支持双向链接",
+        "subcategory": "笔记",
+        "url": "https://obsidian.md/",
+        "image": "./images/obsidian.svg",
+        "recommended": true
+      },
+      {
+        "name": "Notion",
+        "description": "All-in-one 工作空间，文档、数据库、看板",
+        "subcategory": "笔记",
+        "url": "https://www.notion.so/",
+        "image": "./images/notion.svg",
+        "recommended": false
+      },
+      {
+        "name": "Mac Mouse Fix",
+        "description": "让MacOS的鼠标变得更好的应用，装机必备",
+        "subcategory": "鼠标增强",
+        "url": "https://github.com/noah-nuebling/mac-mouse-fix",
+        "image": "./images/mac-mouse-fix.webp",
+        "recommended": true
+      }
+    ]
+  },
+  {
+    "id": "design",
+    "name": "设计创作",
+    "description": "设计、创作和内容制作相关工具",
+    "order": 3,
+    "tools": [
+      {
+        "name": "Figma",
+        "description": "在线协作设计工具，团队合作很方便",
+        "subcategory": "UI 设计",
+        "url": "https://www.figma.com/",
+        "image": "./images/figma.svg",
+        "recommended": true
+      }
+    ]
+  }
+]

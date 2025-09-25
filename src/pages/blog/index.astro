@@ -3,18 +3,50 @@ import BlogPreview from "@/components/blocks/BlogPreview.astro";
 import Container from "@/components/layout/Container.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getBlog } from "@/utils/content";
+import { Calendar, Clock } from "@lucide/astro";
 
 const blog = await getBlog();
 ---
 
-<BaseLayout title="博客文章" description="一些有用或者有趣的内容">
+<BaseLayout title="博客" description="一些有用或者有趣的内容">
   <section class="py-16 sm:py-24">
     <Container size="sm">
-      <div class="flex flex-col gap-3">
-        <h1 class="text-3xl">博客文章</h1>
-        <p class="text-base text-muted-foreground">一些有用或者有趣的内容</p>
+      <div class="mb-10">
+        <h1 class="mb-2 text-2xl font-bold">博客</h1>
+        <p class="text-muted-foreground">记录一些技术踩坑和有趣的发现</p>
       </div>
-      {blog.map((item) => <BlogPreview blog={item} />)}
+
+      {
+        blog.length > 0 ? (
+          <div class="space-y-0">
+            {blog.map((item) => (
+              <BlogPreview blog={item} />
+            ))}
+          </div>
+        ) : (
+          <div class="rounded-xl border border-dashed border-border py-16 text-center">
+            <div class="space-y-3">
+              <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                <Clock class="h-6 w-6 text-muted-foreground" />
+              </div>
+              <p class="text-muted-foreground">还没有发布文章</p>
+              <p class="text-sm text-muted-foreground/70">内容正在准备中...</p>
+            </div>
+          </div>
+        )
+      }
+
+      {
+        blog.length > 0 && (
+          <footer class="mt-12 border-t border-border pt-8">
+            <div class="flex items-center justify-center gap-8 text-sm text-muted-foreground">
+              <div class="flex items-center gap-2">
+                <span>共 {blog.length} 篇文章</span>
+              </div>
+            </div>
+          </footer>
+        )
+      }
     </Container>
   </section>
 </BaseLayout>

@@ -1,27 +1,73 @@
 ---
-import Button from "@/components/ui/Button.astro";
-import Badge from "@/components/ui/Badge.astro";
 import Container from "@/components/layout/Container.astro";
 import { siteConfig } from "@/config";
+import { Mail, Github, Coffee } from "@lucide/astro";
 ---
 
-<section class="py-16 sm:py-24">
-  <Container size="sm" class="mx-auto max-w-3xl text-center">
-    <Badge variant="secondary" class="mb-4 rounded-xl px-3 py-1"> 🚀 业余全栈开发者 </Badge>
+<section class="hero-section pt-16 pb-12 sm:pt-20 sm:pb-16">
+  <Container size="sm">
+    <div class="space-y-5">
+      <!-- Status indicator - the highlight element -->
+      <div class="inline-flex items-center gap-2 text-sm text-muted-foreground">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+        </span>
+        <span>正在写代码中...</span>
+      </div>
 
-    <h1 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-      {siteConfig.author}
-    </h1>
+      <!-- Main introduction -->
+      <div>
+        <h1 class="mb-3 text-2xl font-bold">
+          嗨，我是 {siteConfig.author}
+        </h1>
+        <p class="text-lg leading-relaxed text-muted-foreground">业余全栈开发者，写代码是爱好不是职业</p>
+      </div>
 
-    <p class="mt-4 text-lg text-muted-foreground">
-      热衷于用代码解决问题，创造有价值的产品。
-      <br />
-      目前专注于现代 Web 技术栈和用户体验优化。
-    </p>
+      <!-- Personal description -->
+      <div class="prose max-w-none prose-neutral dark:prose-invert">
+        <p class="leading-relaxed text-foreground/80">
+          喜欢折腾各种有趣的技术，偶尔能做出一些有用的小工具。 在这里记录学习过程中的踩坑经历和一些奇思妙想，
+          希望能帮到遇到相同问题的朋友，或者给你带来一些启发。
+        </p>
+      </div>
 
-    <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-6">
-      <Button href="/blog"> 查看博客 </Button>
-      <Button variant="outline" href="/about"> 关于我 </Button>
+      <!-- Contact links -->
+      <div class="flex items-center gap-4 pt-2 text-sm">
+        {
+          siteConfig.social.map((link) => (
+            <a
+              href={link.href}
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              class="flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
+              aria-label={link.name}
+            >
+              {link.icon === "Mail" ? <Mail class="h-4 w-4" /> : <Github class="h-4 w-4" />}
+              <span>{link.name === "email" ? "联系我" : "GitHub"}</span>
+            </a>
+          ))
+        }
+        <span class="text-muted-foreground/30">|</span>
+        <span class="flex items-center gap-1.5 text-muted-foreground/70">
+          <Coffee class="h-4 w-4" />
+          <span>用爱发电</span>
+        </span>
+      </div>
     </div>
   </Container>
 </section>
+
+<style>
+  @keyframes ping {
+    75%,
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  .animate-ping {
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+</style>

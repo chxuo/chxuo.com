@@ -1,36 +1,116 @@
 ---
 import { getLatestBlog } from "@/utils/content";
 import Container from "../layout/Container.astro";
-import BlogPreview from "@/components/blocks/BlogPreview.astro";
-import Button from "../ui/Button.astro";
-import { Newspaper } from "@lucide/astro";
+import { Calendar, ArrowUpRight } from "@lucide/astro";
+import dayjs from "dayjs";
+import { getReadingTime } from "@/utils/reading-time";
 
 const latestBlog = await getLatestBlog();
 ---
 
-<section class="py-6 sm:py-12">
+<section class="latest-content pt-12 pb-12 sm:pt-16 sm:pb-16">
   <Container size="sm">
-    <div class="mb-4 flex items-center gap-4">
-      <Newspaper />
-      <div>
-        <h3 class="font-semibold">技术博客</h3>
-        <p class="text-sm text-muted-foreground">一些有趣或者有用的内容</p>
-      </div>
+    <!-- Section header -->
+    <div class="mb-8">
+      <h2 class="mb-2 text-2xl font-bold">最新文章</h2>
+      <p class="text-muted-foreground">记录一些技术踩坑和有趣的发现</p>
     </div>
 
-    <div>
+    <!-- Blog grid -->
+    <div class="space-y-4">
       {
         latestBlog.length > 0 ? (
-          <>
-            {latestBlog.map((blog) => (
-              <BlogPreview blog={blog} />
-            ))}
-          </>
+          latestBlog.map((blog, index) => (
+            <article class="blog-item group">
+              <a href={`/blog/${blog.id}`} class="block">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1 space-y-2">
+                    <h3 class="line-clamp-2 text-lg font-semibold text-foreground transition-colors group-hover:text-primary">
+                      {blog.data.title}
+                    </h3>
+                    <p class="line-clamp-2 text-muted-foreground">{blog.data.description}</p>
+                    <div class="flex items-center gap-4 text-sm text-muted-foreground/70">
+                      <span class="flex items-center gap-1">
+                        <Calendar class="h-3 w-3" />
+                        {dayjs(blog.data.pubDate).format("YYYY年MM月DD日")}
+                      </span>
+                      <span>{getReadingTime(blog.body || "")}</span>
+                    </div>
+                  </div>
+                  <ArrowUpRight class="h-5 w-5 text-muted-foreground/50 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary" />
+                </div>
+              </a>
+            </article>
+          ))
         ) : (
-          <div>Empty</div>
+          <div class="py-12 text-center text-muted-foreground">
+            <p class="mb-2">还没有发布文章</p>
+            <p class="text-sm">内容正在准备中...</p>
+          </div>
         )
       }
     </div>
-    <Button href="/blog" variant="outline" class="w-full"> 查看更多博客 </Button>
+
+    <!-- View all link -->
+    {
+      latestBlog.length > 0 && (
+        <div class="mt-8 text-center">
+          <a
+            href="/blog"
+            class="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <span>查看全部文章</span>
+            <ArrowUpRight class="h-4 w-4" />
+          </a>
+        </div>
+      )
+    }
   </Container>
 </section>
+
+<style>
+  .blog-item {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid hsl(var(--border) / 0.3);
+  }
+
+  .blog-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .blog-item a {
+    position: relative;
+  }
+
+  .blog-item a::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    right: -1rem;
+    top: -0.5rem;
+    bottom: -0.5rem;
+    background: hsl(var(--muted) / 0);
+    border-radius: 0.5rem;
+    transition: background 0.2s ease;
+    z-index: -1;
+  }
+
+  .blog-item:hover a::before {
+    background: hsl(var(--muted) / 0.3);
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 640px) {
+    .blog-item a::before {
+      left: -0.5rem;
+      right: -0.5rem;
+    }
+  }
+</style>

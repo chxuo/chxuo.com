@@ -1,0 +1,32 @@
+---
+interface Props {
+  size?: "sm" | "md" | "lg";
+  class?: string;
+}
+
+const { size = "md", class: className = "" } = Astro.props;
+
+const sizeMap = {
+  sm: "h-5 w-5",
+  md: "h-5 w-5",
+  lg: "h-5 w-5",
+};
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="8 8 16 16"
+  class={`${sizeMap[size]} ${className}`}
+  aria-label="chxuo logo"
+>
+  <!-- Diagonal Grid with Rounded Corners -->
+  <g class="fill-foreground">
+    <!-- Top-left and bottom-right - primary color -->
+    <rect x="9" y="9" width="6" height="6" rx="1.2" ry="1.2"></rect>
+    <rect x="17" y="17" width="6" height="6" rx="1.2" ry="1.2"></rect>
+
+    <!-- Top-right and bottom-left - secondary color with opacity -->
+    <rect x="17" y="9" width="6" height="6" rx="1.2" ry="1.2" opacity="0.3"></rect>
+    <rect x="9" y="17" width="6" height="6" rx="1.2" ry="1.2" opacity="0.3"></rect>
+  </g>
+</svg>

@@ -1,14 +1,11 @@
 ---
 import type { CollectionEntry } from "astro:content";
-// import TableOfContents from '@components/TableOfContents.astro'
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { formatDate } from "@/utils/date";
 import type { MarkdownHeading } from "astro";
 import { getReadingTime } from "@/utils/reading-time";
-import TableOfContents from "@/components/features/TableOfContents.astro";
 import Container from "@/components/layout/Container.astro";
-import Badge from "@/components/ui/Badge.astro";
-import { Hash } from "@lucide/astro";
+import { Calendar, Clock, ArrowLeft, Hash } from "@lucide/astro";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -28,23 +25,51 @@ const readingTime = getReadingTime(post.body || "");
 >
   <section class="py-16 sm:py-24">
     <Container size="sm">
-      <article class="prose max-w-none dark:prose-invert">
-        <header class="not-prose mb-8">
-          <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-            <time datetime={post.data.pubDate.toISOString()}>{formattedTime}</time>
-            <span>•</span>
-            {readingTime && <span>{readingTime}</span>}
+      <article>
+        <!-- 简约的文章头部 -->
+        <header class="mb-12">
+          <!-- 返回链接 -->
+          <a
+            href="/blog"
+            class="mb-6 inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft class="h-4 w-4" />
+            <span>返回博客</span>
+          </a>
+
+          <!-- 标题 -->
+          <h1 class="mb-4 text-3xl font-bold">{post.data.title}</h1>
+
+          <!-- 元数据 -->
+          <div class="flex items-center gap-4 text-sm text-muted-foreground">
+            <span class="flex items-center gap-1">
+              <Calendar class="h-3 w-3" />
+              {formattedTime}
+            </span>
+            {
+              readingTime && (
+                <>
+                  <span class="text-muted-foreground/30">·</span>
+                  <span class="flex items-center gap-1">
+                    <Clock class="h-3 w-3" />
+                    {readingTime}
+                  </span>
+                </>
+              )
+            }
           </div>
-          <h1 class="heading mt-2 mb-4 text-4xl">{post.data.title}</h1>
+
+          <!-- 标签 -->
           {
-            post.data.tags && (
-              <div class="flex flex-wrap gap-2">
+            post.data.tags && post.data.tags.length > 0 && (
+              <div class="mt-4 flex flex-wrap gap-2">
                 {post.data.tags.map((tag: string) => (
-                  <a href={`/tags/${tag}`} title="tag">
-                    <Badge variant="outline" class="btn rd-md px-2 py-1 text-sm">
-                      <Hash size="14" />
-                      {tag}
-                    </Badge>
+                  <a
+                    href={`/tags/${tag}`}
+                    class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground"
+                  >
+                    <Hash class="h-3 w-3" />
+                    {tag}
                   </a>
                 ))}
               </div>
@@ -52,20 +77,23 @@ const readingTime = getReadingTime(post.body || "");
           }
         </header>
 
-        {
-          headings.length > 0 && (
-            <details class="not-prose themed mb-8 rounded-lg bg-gray-200 dark:bg-gray-800">
-              <summary class="hover:text-primary-500 cursor-pointer px-4 py-3 font-medium transition-colors">
-                目录
-              </summary>
-              <div class="px-4 pb-4">
-                <TableOfContents headings={headings} />
-              </div>
-            </details>
-          )
-        }
+        <!-- 文章内容 -->
+        <div
+          class="prose max-w-none prose-neutral dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-h2:mt-8 prose-h2:mb-4 prose-h2:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-h3:text-lg prose-p:mb-6 prose-p:text-base prose-p:leading-7 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-pre:border prose-pre:border-border prose-pre:bg-muted prose-ol:my-6 prose-ul:my-6 prose-li:my-1 prose-img:rounded-lg prose-img:border prose-img:border-border"
+        >
+          <slot />
+        </div>
 
-        <slot />
+        <!-- 文章底部 -->
+        <footer class="mt-16 border-t border-border pt-8">
+          <a
+            href="/blog"
+            class="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft class="h-4 w-4" />
+            <span>返回博客列表</span>
+          </a>
+        </footer>
       </article>
     </Container>
   </section>

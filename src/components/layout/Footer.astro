@@ -1,34 +1,33 @@
 ---
 import { siteConfig } from "@/config";
-import LucideIcon from "../ui/LucideIcon.astro";
 const currentYear = new Date().getFullYear();
 ---
 
-<!-- border-t border-border -->
-<footer class="mt-auto">
+<footer class="mt-auto border-t border-border">
   <div class="container mx-auto px-4 py-6">
-    <div class="flex flex-row items-center justify-between gap-4">
-      <!-- 版权 -->
-      <div class="text-sm text-muted-foreground">
-        © {currentYear}
-        {siteConfig.author}
+    <div class="flex flex-col items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
+      <!-- 版权信息 -->
+      <div class="flex items-center gap-1">
+        <span>© {currentYear} {siteConfig.author}</span>
+        <span class="hidden sm:inline">•</span>
+        <span class="hidden sm:inline">Built with ❤️ and Astro</span>
       </div>
 
-      <!-- 社交链接 -->
-      <div class="flex gap-4">
-        {
-          siteConfig.social.map((link) => (
-            <a
-              href={link.name === "email" ? `mailto:${link.href}` : link.href}
-              target={link.name === "email" ? undefined : "_blank"}
-              rel={link.name === "email" ? undefined : "noopener noreferrer"}
-              class="text-muted-foreground transition-colors hover:text-foreground"
-              aria-label={link.name}
-            >
-              {link.icon && <LucideIcon name={link.icon} />}
-            </a>
-          ))
-        }
+      <!-- 实用链接 -->
+      <div class="flex items-center gap-4">
+        <a href="/rss.xml" class="transition-colors hover:text-foreground" aria-label="RSS Feed"> RSS </a>
+        <span>•</span>
+        <a href="/sitemap-index.xml" class="transition-colors hover:text-foreground" aria-label="Sitemap"> Sitemap </a>
+        <span>•</span>
+        <a
+          href="https://github.com/chxuo/chxuo.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="transition-colors hover:text-foreground"
+          aria-label="View Source on GitHub"
+        >
+          Source
+        </a>
       </div>
     </div>
   </div>

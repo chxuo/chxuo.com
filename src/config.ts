@@ -8,7 +8,7 @@ export const siteConfig: SiteConfig = {
   social: [
     {
       name: "email",
-      href: "hi@chxuo.com",
+      href: "mailto:hi@chxuo.com",
       icon: "Mail",
     },
     {

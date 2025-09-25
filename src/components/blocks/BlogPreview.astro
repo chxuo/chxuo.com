@@ -1,29 +1,102 @@
 ---
-import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
+import { Calendar, ArrowUpRight } from "@lucide/astro";
+import dayjs from "dayjs";
+import { getReadingTime } from "@/utils/reading-time";
 
 interface Props {
   blog: CollectionEntry<"blog">;
 }
 
 const { blog } = Astro.props;
+
+// Format the publication date
+const publishedDate = dayjs(blog.data.pubDate).format("YYYY年MM月DD日");
+
+// Extract reading time if available
+const readingTime = getReadingTime(blog.body || "") || "5分钟阅读";
+
+// Extract tags if available
+const tags = blog.data.tags || [];
 ---
 
-<a href={`/blog/${blog.id}`} class="my-3 flex gap-5 rounded-md p-5 hover:bg-muted">
-  {
-    blog.data.image && (
-      <Image
-        loading="eager"
-        class="h-20 w-20 rounded-md object-cover"
-        width={200}
-        height={200}
-        src={blog.data.image}
-        alt={blog.data.imageAlt || blog.data.title}
+<article class="blog-preview-card group">
+  <a
+    href={`/blog/${blog.id}`}
+    class="block py-6 transition-all duration-200"
+    aria-label={`阅读文章: ${blog.data.title}`}
+  >
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex-1 space-y-2">
+        <!-- Title -->
+        <h3 class="line-clamp-2 text-lg font-semibold text-foreground transition-colors group-hover:text-primary">
+          {blog.data.title}
+        </h3>
+
+        <!-- Description -->
+        <p class="line-clamp-2 text-muted-foreground">
+          {blog.data.description}
+        </p>
+
+        <!-- Metadata -->
+        <div class="flex items-center gap-4 text-sm text-muted-foreground/70">
+          <span class="flex items-center gap-1">
+            <Calendar class="h-3 w-3" />
+            {publishedDate}
+          </span>
+          {readingTime && <span>{readingTime}</span>}
+        </div>
+      </div>
+
+      <!-- Arrow icon -->
+      <ArrowUpRight
+        class="h-5 w-5 text-muted-foreground/50 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary"
       />
-    )
+    </div>
+  </a>
+</article>
+
+<style>
+  .blog-preview-card {
+    border-bottom: 1px solid hsl(var(--border) / 0.5);
   }
-  <div class="space-y-1">
-    <h2 class="text-xl font-medium">{blog.data.title}</h2>
-    <p>{blog.data.description}</p>
-  </div>
-</a>
+
+  .blog-preview-card:last-child {
+    border-bottom: none;
+  }
+
+  .blog-preview-card a {
+    position: relative;
+  }
+
+  .blog-preview-card a::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    right: -1rem;
+    top: -0.5rem;
+    bottom: -0.5rem;
+    background: hsl(var(--muted) / 0);
+    border-radius: 0.5rem;
+    transition: background 0.2s ease;
+    z-index: -1;
+  }
+
+  .blog-preview-card:hover a::before {
+    background: hsl(var(--muted) / 0.3);
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 640px) {
+    .blog-preview-card a::before {
+      left: -0.5rem;
+      right: -0.5rem;
+    }
+  }
+</style>

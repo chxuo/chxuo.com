@@ -1,0 +1,99 @@
+---
+import Container from "@/components/layout/Container.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Users, ExternalLink, Heart } from "@lucide/astro";
+import { getCollection } from "astro:content";
+
+// 从 content collection 获取朋友链接数据
+const friends = await getCollection("friends");
+---
+
+<BaseLayout title="朋友" description="友情链接">
+  <section class="py-16 sm:py-24">
+    <Container size="sm">
+      <!-- Page header -->
+      <div class="mb-10">
+        <h1 class="mb-2 text-2xl font-bold">朋友们</h1>
+        <p class="text-muted-foreground">志同道合的朋友们的博客</p>
+      </div>
+
+      <!-- Friends list -->
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          friends.length > 0 ? (
+            friends.map((friend) => (
+              <article class="friend-card group">
+                <a href={friend.data.url} target="_blank" rel="noopener noreferrer" class="block h-full">
+                  <div class="flex h-full flex-col gap-3 rounded-lg border border-border bg-card p-4 transition-all duration-200 hover:border-primary/50 hover:shadow-md">
+                    <div class="flex items-start gap-3">
+                      <img
+                        src={friend.data.avatar}
+                        alt={friend.data.name}
+                        class="h-12 w-12 rounded-full bg-muted"
+                        loading="lazy"
+                      />
+                      <div class="flex-1 space-y-1">
+                        <h3 class="font-medium text-foreground transition-colors group-hover:text-primary">
+                          {friend.data.name}
+                        </h3>
+                        <p class="line-clamp-2 text-sm text-muted-foreground">{friend.data.description}</p>
+                      </div>
+                      <ExternalLink class="h-4 w-4 text-muted-foreground/30 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
+                    </div>
+                  </div>
+                </a>
+              </article>
+            ))
+          ) : (
+            <div class="col-span-full">
+              <div class="rounded-xl border border-dashed border-border py-16 text-center">
+                <div class="space-y-3">
+                  <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                    <Users class="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <p class="text-muted-foreground">还没有添加朋友链接</p>
+                  <p class="text-sm text-muted-foreground/70">欢迎交换友链！</p>
+                </div>
+              </div>
+            </div>
+          )
+        }
+      </div>
+
+      <!-- Exchange link info -->
+      <div class="mt-12 rounded-lg border border-border bg-muted/30 p-6">
+        <h2 class="mb-3 flex items-center gap-2 text-lg font-semibold">
+          <Heart class="h-5 w-5 text-red-500" />
+          交换友链
+        </h2>
+        <p class="mb-4 text-sm text-muted-foreground">
+          如果你也有自己的博客，欢迎交换友链！请发邮件给我，附上以下信息：
+        </p>
+        <ul class="space-y-1 text-sm text-muted-foreground">
+          <li>• 网站名称</li>
+          <li>• 网站地址</li>
+          <li>• 网站描述（一句话介绍）</li>
+          <li>• 头像地址（可选）</li>
+        </ul>
+        <div class="mt-4 border-t border-border pt-4">
+          <p class="text-sm text-muted-foreground">
+            本站信息：<br />
+            名称：chxuo's Blog<br />
+            地址：https://chxuo.com<br />
+            描述：业余全栈开发者，分享技术与思考<br />
+            头像：https://chxuo.com/logo.svg
+          </p>
+        </div>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
