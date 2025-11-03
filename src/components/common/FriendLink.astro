@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+
+interface Props {
+  friend: CollectionEntry<"friends">;
+}
+
+const { friend } = Astro.props;
+---
+
+<a
+  href={friend.data.homepage}
+  title={friend.data.website}
+  class="flex items-center gap-3 bg-muted px-4 py-4 opacity-75 hover:opacity-100"
+>
+  <div class="h-12 w-12">
+    <Image
+      src={friend.data.avatar}
+      width={48}
+      height={48}
+      alt={`${friend.data.website}'s avatar`}
+      class={"rounded-full border-5 border-accent"}
+    />
+  </div>
+  <div class="flex flex-col gap-2 text-sm">
+    <h2 class="font-medium">
+      {friend.data.website}
+    </h2>
+    <div class="text-xs">
+      {friend.data.description}
+    </div>
+  </div>
+</a>

@@ -1,0 +1,83 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "./BaseLayout.astro";
+import siteConfig from "@/config/site";
+import { formatDate } from "@/utils/date";
+import Footer from "@/components/layout/Footer.astro";
+import BackButton from "@/components/common/BackButton.astro";
+import type { MarkdownHeading } from "astro";
+import TableOfContents from "@/components/blocks/TableOfContents.astro";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+  headings: MarkdownHeading[];
+}
+
+const { post, headings } = Astro.props;
+---
+
+<BaseLayout
+  title={`${post.data.title} · ${siteConfig.title}`}
+  description={post.data.summary}
+  article={true}
+  image={post.data.cover?.src}
+  publishedTime={post.data.createdAt}
+  modifiedTime={post.data.updatedAt}
+  tags={post.data.tags}
+  author={siteConfig.author}
+>
+  <BackButton />
+  <TableOfContents headings={headings} />
+  <article>
+    <div class="mb-8">
+      <h1 class="mb-2 text-base font-bold">{post.data.title}</h1>
+      <div class="text-base opacity-75">
+        <time
+          class="font-[350] tracking-tighter"
+          datetime={post.data.createdAt.toISOString()}
+          >{formatDate(post.data.createdAt)}</time
+        >
+      </div>
+    </div>
+
+    <div
+      class="content prose dark:prose-invert prose-headings:tracking-tight prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-h4:text-base"
+    >
+      <slot />
+    </div>
+  </article>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .active {
+    color: red;
+  }
+</style>
+
+<script>
+  function addIntersectionObserver() {
+    const observer = new IntersectionObserver((sections) => {
+      sections.forEach((section) => {
+        const id = section.target.getAttribute("id");
+        const link = document.querySelector(`#toc li a[href="#${id}"]`);
+        if (!link) {
+          return;
+        }
+
+        const addRemove = section.intersectionRatio > 0 ? "add" : "remove";
+        link.classList[addRemove]("active");
+      });
+    });
+
+    document
+      .querySelectorAll("article h2, article h3, article h4, article h5")
+      .forEach((section) => {
+        observer.observe(section);
+      });
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    addIntersectionObserver();
+  });
+</script>

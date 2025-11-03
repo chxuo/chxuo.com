@@ -1,6 +1,8 @@
 ---
+import ThemeManager from "@/components/blocks/ThemeManager.astro";
 import BaseHead from "@/components/meta/BaseHead.astro";
 import "@/styles/global.css";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title?: string;
@@ -13,23 +15,16 @@ interface Props {
   author?: string;
 }
 
-const {
-  title,
-  description,
-  image,
-  article = false,
-  publishedTime,
-  modifiedTime,
-  tags,
-  author,
-} = Astro.props;
+const head = Astro.props;
 ---
 
 <html lang="en">
   <head>
-    <BaseHead />
+    <BaseHead {...head} />
+    <ClientRouter />
+    <ThemeManager defaultTheme="auto" />
   </head>
-  <body>
+  <body class="mx-auto max-w-xl bg-background px-6 pt-24 pb-6 text-foreground">
     <slot />
   </body>
 </html>

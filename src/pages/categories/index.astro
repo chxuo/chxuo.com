@@ -1,0 +1,21 @@
+---
+import CategoryPreview from "@/components/common/CategoryPreview.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { getCategoryMap } from "@/utils/post";
+
+const categoryMap = await getCategoryMap();
+const categories = categoryMap.keys();
+---
+
+<MainLayout>
+  <section class="mt-7 grid md:grid-cols-2">
+    {
+      categories.map((category) => (
+        <CategoryPreview
+          category={category}
+          posts={categoryMap.get(category) || []}
+        />
+      ))
+    }
+  </section>
+</MainLayout>

@@ -1,0 +1,42 @@
+---
+import { formatReleativeDate } from "@/utils/date";
+import { getCategory } from "@/utils/post";
+import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  category: string;
+  posts: CollectionEntry<"posts">[];
+}
+
+const { category: categoryName, posts } = Astro.props;
+const category = await getCategory(categoryName);
+const updatedAt =
+  posts.length > 0
+    ? formatReleativeDate(posts[0].data.updatedAt || posts[0].data.createdAt)
+    : "never";
+---
+
+<a
+  href={`/categories/${category?.data.slug}`}
+  title={category?.data.name}
+  class="bg-muted px-4 py-4 opacity-75 hover:opacity-100"
+>
+  <div class="flex flex-col gap-2 text-sm">
+    <h2 class="min-w-0 shrink">
+      {category?.data.name}
+    </h2>
+    <div class="text-xs">
+      {category?.data.description}
+    </div>
+    <div class="flex items-center justify-between">
+      <span class="flex items-center gap-0.5 font-serif"
+        ><Icon name="tabler:news" /> {posts.length}</span
+      >
+      <span class="flex items-center gap-0.5 font-serif"
+        ><Icon name="tabler:clock" />
+        <span class="text-xs">{updatedAt}</span></span
+      >
+    </div>
+  </div>
+</a>

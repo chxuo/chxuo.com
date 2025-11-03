@@ -1,0 +1,14 @@
+---
+import PostPreview from "../common/PostPreview.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  posts: CollectionEntry<"posts">[];
+}
+
+const { posts } = Astro.props;
+---
+
+<section class="mt-7">
+  {posts.map((post) => <PostPreview post={post} />)}
+</section>

@@ -1,5 +1,13 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "@/components/blocks/Hero.astro";
+import PostList from "@/components/blocks/PostList.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { getPosts } from "@/utils/post";
+
+const posts = await getPosts();
 ---
 
-<BaseLayout />
+<MainLayout>
+  <Hero />
+  <PostList posts={posts} />
+</MainLayout>

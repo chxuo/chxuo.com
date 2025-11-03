@@ -1,0 +1,25 @@
+---
+import { formatDate } from "@/utils/date";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+
+const { post } = Astro.props;
+---
+
+<a href={`/${post.id}`} title={post.data.title}>
+  <div class="flex h-11 items-center justify-between gap-3 text-sm">
+    <h2 class="min-w-0 shrink overflow-hidden text-nowrap text-ellipsis">
+      {post.data.title}
+    </h2>
+    <div class="my-1 h-[0.5px] min-w-12 flex-1 bg-primary/15"></div>
+    <time
+      class="shrink-0 tracking-tighter text-nowrap opacity-75"
+      datetime={post.data.createdAt.toISOString()}
+    >
+      {formatDate(post.data.createdAt)}
+    </time>
+  </div>
+</a>

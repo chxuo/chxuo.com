@@ -1,0 +1,37 @@
+---
+import siteConfig from "@/config/site";
+---
+
+<section class="hero mt-7">
+  <p>
+    Hi，我是轻河，一名业余全栈开发者，希望成为独立开发者，能够做出一些有用或者有趣的小玩意儿。
+  </p>
+  <p>
+    目前热衷于探索 Web 技术和 AI
+    大模型，在这里主要是记录一些我的折腾笔记和技术随笔。
+  </p>
+  <p>
+    你可以通过 {
+      siteConfig.social?.map((item, index) => (
+        <>
+          {index > 0 ? "、" : ""}
+          <a
+            href={item.url}
+            title={item.name}
+            class="underline opacity-75 hover:opacity-100"
+          >
+            {item.name}
+          </a>
+        </>
+      ))
+    } 找到我。
+  </p>
+</section>
+
+<style>
+  @reference "../../styles/global.css";
+
+  .hero p {
+    @apply mx-0 my-4 text-sm leading-7;
+  }
+</style>

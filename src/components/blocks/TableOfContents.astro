@@ -1,0 +1,29 @@
+---
+import TableOfContentsHeading from "./TableOfContentsHeading.astro";
+import type { MarkdownHeading } from "astro";
+import { buildToc } from "@/utils/toc";
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+const toc = buildToc(headings);
+---
+
+<div id="toc" class="my-10 hidden text-sm lg:fixed lg:mt-24 lg:-ml-54 lg:block">
+  <ul class="flex w-42 flex-col gap-1">
+    {toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
+  </ul>
+</div>
+
+<style>
+  .toc-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

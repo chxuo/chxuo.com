@@ -16,10 +16,6 @@ const siteConfig: Site = {
       href: "/categories",
     },
     {
-      label: "归档",
-      href: "/archives",
-    },
-    {
       label: "友链",
       href: "/friends",
     },

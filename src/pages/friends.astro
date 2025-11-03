@@ -1,0 +1,13 @@
+---
+import FriendLink from "@/components/common/FriendLink.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { getCollection } from "astro:content";
+
+const friends = await getCollection("friends");
+---
+
+<MainLayout>
+  <section class="mt-7 grid md:grid-cols-2">
+    {friends.map((friend) => <FriendLink friend={friend} />)}
+  </section>
+</MainLayout>
