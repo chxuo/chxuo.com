@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 
 import tailwindcss from "@tailwindcss/vite";
 
@@ -20,4 +20,11 @@ export default defineConfig({
   },
 
   integrations: [expressiveCode(), mdx(), icon(), sitemap()],
+
+  env: {
+    schema: {
+      UMAMI_URL: envField.string({ context: "server", access: "public", optional: true }),
+      UMAMI_WEBSITE_ID: envField.string({ context: "server", access: "public", optional: true })
+    }
+  }
 });

@@ -1,4 +1,5 @@
 ---
+import Umami from "@/components/analytics/Umami.astro";
 import ThemeManager from "@/components/blocks/ThemeManager.astro";
 import BaseHead from "@/components/meta/BaseHead.astro";
 import "@/styles/global.css";
@@ -26,5 +27,7 @@ const head = Astro.props;
   </head>
   <body class="mx-auto max-w-xl bg-background px-6 pt-24 pb-6 text-foreground">
     <slot />
+
+    <Umami />
   </body>
 </html>

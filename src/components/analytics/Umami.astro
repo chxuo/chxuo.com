@@ -1,0 +1,14 @@
+---
+import { UMAMI_URL, UMAMI_WEBSITE_ID } from "astro:env/server";
+
+interface Props {
+  scriptUrl?: string;
+  websiteId?: string;
+}
+
+const { scriptUrl, websiteId } = Astro.props;
+const url = scriptUrl || UMAMI_URL;
+const id = websiteId || UMAMI_WEBSITE_ID;
+---
+
+{id && <script defer src={url} data-website-id={id} />}
