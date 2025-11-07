@@ -3,5 +3,10 @@
     "name": "未分类",
     "slug": "uncategorized",
     "description": "这都是啥？"
+  },
+  {
+    "name": "技术",
+    "slug": "tech",
+    "description": "一些技术相关的内容"
   }
 ]

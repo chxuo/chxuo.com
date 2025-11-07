@@ -10,7 +10,7 @@ const { post } = Astro.props;
 ---
 
 <a href={`/${post.id}`} title={post.data.title}>
-  <div class="flex h-11 items-center justify-between gap-3 text-sm">
+  <div class="flex h-11 items-center justify-between gap-3">
     <h2 class="min-w-0 shrink overflow-hidden text-nowrap text-ellipsis">
       {post.data.title}
     </h2>

@@ -30,7 +30,7 @@ const { post, headings } = Astro.props;
   <TableOfContents headings={headings} />
   <article>
     <div class="mb-8">
-      <h1 class="mb-2 text-base font-bold">{post.data.title}</h1>
+      <h1 class="mb-2 text-xl font-bold">{post.data.title}</h1>
       <div class="text-base opacity-75">
         <time
           class="font-[350] tracking-tighter"
@@ -40,9 +40,7 @@ const { post, headings } = Astro.props;
       </div>
     </div>
 
-    <div
-      class="content prose dark:prose-invert prose-headings:tracking-tight prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-h4:text-base"
-    >
+    <div class="content prose dark:prose-invert prose-headings:tracking-tight">
       <slot />
     </div>
   </article>

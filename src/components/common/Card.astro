@@ -1,17 +1,21 @@
 ---
 interface Props {
   href?: string;
+  title?: string;
   class?: string;
 }
 
-const { href, class: className } = Astro.props;
+const { href, title, class: className } = Astro.props;
 
 const Element = href ? "a" : "div";
-const extraProps = href ? { href } : {};
+const extraProps = href ? { href, title } : {};
 ---
 
 <Element
-  class:list={["bg-muted opacity-75 hover:opacity-100", className]}
+  class:list={[
+    "rounded-sm opacity-75 hover:bg-muted hover:opacity-100",
+    className,
+  ]}
   {...extraProps}
 >
   <slot />
