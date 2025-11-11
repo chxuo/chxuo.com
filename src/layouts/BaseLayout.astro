@@ -1,6 +1,8 @@
 ---
 import Umami from "@/components/analytics/Umami.astro";
 import ThemeManager from "@/components/blocks/ThemeManager.astro";
+import Footer from "@/components/layout/Footer.astro";
+import Header from "@/components/layout/Header.astro";
 import BaseHead from "@/components/meta/BaseHead.astro";
 import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
@@ -25,8 +27,12 @@ const head = Astro.props;
     <ClientRouter />
     <ThemeManager defaultTheme="auto" />
   </head>
-  <body class="mx-auto max-w-xl bg-background px-6 pt-24 pb-6 text-foreground">
+  <body
+    class="mx-auto max-w-xl bg-background px-2 pt-4 pb-6 font-serif text-foreground md:pt-16 lg:px-6 lg:pt-24"
+  >
+    <Header />
     <slot />
+    <Footer />
 
     <Umami />
   </body>

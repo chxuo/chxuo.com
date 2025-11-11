@@ -1,11 +1,11 @@
 ---
 import Card from "@/components/common/Card.astro";
 import siteConfig from "@/config/site";
-import MainLayout from "@/layouts/MainLayout.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 ---
 
-<MainLayout>
+<BaseLayout>
   <Card class="mt-7 mb-7 p-10">
     <div class="flex w-full items-center justify-center gap-10">
       <Image
@@ -65,4 +65,4 @@ import { Image } from "astro:assets";
       </div>
     </div>
   </Card>
-</MainLayout>
+</BaseLayout>
