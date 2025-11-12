@@ -22,6 +22,6 @@ const posts = categoryMap.get(category.data.name) || [];
 ---
 
 <BaseLayout>
-  <h2 class="mt-7 text-sm">{category.data.name}（共 {posts.length} 篇文章）</h2>
+  <h2 class="mt-7 text-xl">{category.data.name}（共 {posts.length} 篇文章）</h2>
   <PostList posts={posts} />
 </BaseLayout>

@@ -7,7 +7,9 @@ const friends = await getCollection("friends");
 ---
 
 <BaseLayout>
-  <section class="mt-7 grid md:grid-cols-2">
+  <section
+    class="mt-7 grid grid-cols-1 max-md:space-y-4 md:grid-cols-2 md:space-x-4"
+  >
     {friends.map((friend) => <FriendLink friend={friend} />)}
   </section>
 </BaseLayout>

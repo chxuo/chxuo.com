@@ -18,7 +18,7 @@ const { post } = Astro.props;
         <Image
           src={post.data.cover}
           alt={`${post.data.title}'s cover`}
-          class="h-32 transition-all duration-300 ease-linear group-hover:scale-110"
+          class="min-h-32 transition-all duration-300 ease-linear group-hover:scale-110"
         />
       </div>
     )

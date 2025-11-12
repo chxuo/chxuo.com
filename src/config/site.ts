@@ -16,6 +16,10 @@ const siteConfig: Site = {
       href: "/categories",
     },
     {
+      label: "标签",
+      href: "/tags",
+    },
+    {
       label: "友链",
       href: "/friends",
     },

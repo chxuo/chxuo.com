@@ -1,0 +1,31 @@
+---
+import { formatReleativeDate } from "@/utils/date";
+import { getCategory, getTag } from "@/utils/post";
+import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+import Card from "./Card.astro";
+
+interface Props {
+  tag: string;
+  cnt: number;
+}
+
+const { tag: tagName, cnt: postCnt } = Astro.props;
+
+const tag = await getTag(tagName);
+---
+
+{
+  tag && (
+    <a
+      href={`/tags/${tag.data.slug}`}
+      class="group inline-flex items-center rounded-lg border border-border px-2 py-2 hover:border-muted hover:bg-muted"
+    >
+      <Icon name="tabler:hash" class="text-gray-400 dark:text-gray-500" />
+      <span class="ml-0.5">{tag.data.name}</span>
+      <span class="ml-2 h-8 w-8 rounded-lg bg-accent text-center font-mono text-sm leading-8">
+        {postCnt}
+      </span>
+    </a>
+  )
+}

@@ -1,0 +1,15 @@
+---
+import CategoryPreview from "@/components/common/CategoryPreview.astro";
+import TagPreview from "@/components/common/TagPreview.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getTags } from "@/utils/post";
+
+const tagMap = await getTags();
+const tags = tagMap.keys();
+---
+
+<BaseLayout>
+  <section class="mt-7 space-x-4">
+    {tags.map((tag) => <TagPreview tag={tag} cnt={tagMap.get(tag) || 0} />)}
+  </section>
+</BaseLayout>

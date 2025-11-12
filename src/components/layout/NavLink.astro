@@ -1,0 +1,32 @@
+---
+import type { NavLinkType } from "@/types";
+
+interface Props {
+  link: NavLinkType;
+  active: boolean;
+}
+
+const { link, active } = Astro.props;
+---
+
+<a
+  href={link.href}
+  aria-label={link.label}
+  title={link.label}
+  class:list={[active ? "active" : ""]}
+>
+  {link.label}
+</a>
+
+<style>
+  a {
+    color: var(--color-accent-foreground);
+    opacity: 65%;
+    font-weight: 500;
+  }
+
+  a.active {
+    color: var(--color-foreground);
+    opacity: 100%;
+  }
+</style>

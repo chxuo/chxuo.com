@@ -1,0 +1,30 @@
+---
+import PostList from "@/components/blocks/PostList.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPostsByTag } from "@/utils/post";
+import type { GetStaticPaths } from "astro";
+import { Icon } from "astro-icon/components";
+import { getCollection } from "astro:content";
+
+export const getStaticPaths = (async () => {
+  const tags = await getCollection("tags");
+
+  return tags.map((tag) => ({
+    params: { slug: tag.data.slug },
+    props: {
+      tag,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { tag } = Astro.props;
+const posts = await getPostsByTag(tag.data.name);
+---
+
+<BaseLayout>
+  <h2 class="mt-7 flex items-center text-xl">
+    <Icon name={"tabler:hash"} class="text-gray-400" />
+    {tag.data.name}（共 {posts.length} 篇文章）
+  </h2>
+  <PostList posts={posts} />
+</BaseLayout>

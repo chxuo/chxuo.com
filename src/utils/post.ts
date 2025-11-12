@@ -1,4 +1,4 @@
-import { getCollection, getEntry, type CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 export interface CategoryItem {
   category: CollectionEntry<"categories">;
@@ -20,6 +20,11 @@ export const getPosts = async () => {
 export const getPostsByCategory = async (category: string) => {
   const posts = await getPosts();
   return posts.filter((post) => post.data.category == category);
+};
+
+export const getPostsByTag = async (tagName: string) => {
+  const posts = await getPosts();
+  return posts.filter((post) => post.data.tags.includes(tagName));
 };
 
 export const getCategoryMap = async () => {
@@ -45,4 +50,24 @@ export const getCategories = async () => {
 export const getCategory = async (name: string) => {
   const categories = await getCollection("categories");
   return categories.find((category) => category.data.name == name);
+};
+
+export const getTags = async () => {
+  const tags = new Map<string, number>();
+  const posts = await getPosts();
+  posts.map((post) => {
+    if (!post.data.tags) {
+      return;
+    }
+
+    post.data.tags.map((tag: string) => {
+      tags.set(tag, (tags.get(tag) || 0) + 1);
+    });
+  });
+  return tags;
+};
+
+export const getTag = async (name: string) => {
+  const tags = await getCollection("tags");
+  return tags.find((tag) => tag.data.name == name);
 };
