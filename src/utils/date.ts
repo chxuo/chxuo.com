@@ -10,7 +10,7 @@ export function formatDate(d: string | Date, format: string = "YYYY.MM.DD") {
   return date.format(format);
 }
 
-export function formatReleativeDate(d: string | Date) {
+export function formatRelativeDate(d: string | Date) {
   const date = dayjs(d);
   return date.fromNow();
 }

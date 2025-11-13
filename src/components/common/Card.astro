@@ -12,7 +12,11 @@ const extraProps = href ? { href, title } : {};
 ---
 
 <Element
-  class:list={["rounded-sm border border-border", className]}
+  class:list={[
+    "rounded-sm border border-border transition-colors",
+    href && "hover:border-primary hover:bg-accent",
+    className,
+  ]}
   {...extraProps}
 >
   <slot />

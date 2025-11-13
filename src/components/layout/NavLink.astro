@@ -13,20 +13,11 @@ const { link, active } = Astro.props;
   href={link.href}
   aria-label={link.label}
   title={link.label}
-  class:list={[active ? "active" : ""]}
+  class:list={[
+    "relative px-2 py-1 text-sm font-medium transition-colors",
+    active ? "text-primary" : "text-muted-foreground hover:text-foreground",
+  ]}
 >
   {link.label}
+  {active && <span class="absolute right-0 bottom-0 left-0 h-0.5 bg-primary" />}
 </a>
-
-<style>
-  a {
-    color: var(--color-accent-foreground);
-    opacity: 65%;
-    font-weight: 500;
-  }
-
-  a.active {
-    color: var(--color-foreground);
-    opacity: 100%;
-  }
-</style>

@@ -9,8 +9,6 @@ interface Props {
 const { posts } = Astro.props;
 ---
 
-<section
-  class="mt-7 grid grid-cols-1 max-md:space-y-4 md:grid-cols-2 md:space-x-4"
->
+<section class="grid grid-cols-1 gap-4 md:grid-cols-2">
   {posts.map((post) => <PostPreview post={post} />)}
 </section>

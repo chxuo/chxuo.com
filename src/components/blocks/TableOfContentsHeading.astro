@@ -11,13 +11,13 @@ const { heading } = Astro.props;
 <li>
   <a
     href={"#" + heading.slug}
-    class="block overflow-hidden text-sm tracking-tight text-ellipsis whitespace-nowrap opacity-60 hover:opacity-100"
+    class="line-clamp-2 block py-1 text-muted-foreground transition-colors hover:text-primary"
   >
     {heading.text}
   </a>
   {
     heading.subheadings.length > 0 && (
-      <ul class="mt-1 flex flex-col gap-0.5" style={`margin-left: 8px`}>
+      <ul class="mt-1 ml-3 flex flex-col gap-1 border-l border-border pl-3">
         {heading.subheadings.map((subheading) => (
           <Astro.self heading={subheading} />
         ))}

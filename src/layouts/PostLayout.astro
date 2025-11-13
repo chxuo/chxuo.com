@@ -3,17 +3,27 @@ import type { CollectionEntry } from "astro:content";
 import BaseLayout from "./BaseLayout.astro";
 import siteConfig from "@/config/site";
 import { formatDate } from "@/utils/date";
-import Footer from "@/components/layout/Footer.astro";
-import BackButton from "@/components/common/BackButton.astro";
 import type { MarkdownHeading } from "astro";
 import TableOfContents from "@/components/blocks/TableOfContents.astro";
+import { getCategory, getTag } from "@/utils/post";
+import { Icon } from "astro-icon/components";
 
 interface Props {
-  post: CollectionEntry<"posts">;
   headings: MarkdownHeading[];
+  post: CollectionEntry<"posts">;
+  prevPost?: CollectionEntry<"posts">;
+  nextPost?: CollectionEntry<"posts">;
 }
 
-const { post, headings } = Astro.props;
+const { post, prevPost, nextPost, headings } = Astro.props;
+const category = post.data.category
+  ? await getCategory(post.data.category)
+  : null;
+const tags = post.data.tags
+  ? (await Promise.all(post.data.tags.map((t) => getTag(t)))).filter(
+      (t) => t !== null,
+    )
+  : [];
 ---
 
 <BaseLayout
@@ -26,31 +36,100 @@ const { post, headings } = Astro.props;
   tags={post.data.tags}
   author={siteConfig.author}
 >
-  <!-- <BackButton /> -->
-  <!-- <TableOfContents headings={headings} /> -->
   <article>
-    <div class="mb-8">
-      <h1 class="mb-2 text-2xl font-bold">{post.data.title}</h1>
-      <div class="text-base opacity-75">
-        <time
-          class="font-[350] tracking-tighter"
-          datetime={post.data.createdAt.toISOString()}
-          >{formatDate(post.data.createdAt)}</time
-        >
+    <header class="mb-8">
+      <h1 class="mb-3 text-3xl leading-tight font-bold">{post.data.title}</h1>
+      <div
+        class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground"
+      >
+        <time datetime={post.data.createdAt.toISOString()}>
+          {formatDate(post.data.createdAt)}
+        </time>
+        {
+          category && (
+            <>
+              <span>·</span>
+              <a
+                href={`/categories/${category.data.slug}`}
+                class="inline-flex items-center gap-1 transition-colors hover:text-primary"
+              >
+                <Icon name="tabler:folder" class="h-3.5 w-3.5" />
+                <span>{category.data.name}</span>
+              </a>
+            </>
+          )
+        }
+        {
+          tags.length > 0 && (
+            <>
+              <span>·</span>
+              <div class="flex flex-wrap gap-2">
+                {tags.map(
+                  (tag) =>
+                    tag && (
+                      <a
+                        href={`/tags/${tag.data.slug}`}
+                        class="transition-colors hover:text-primary"
+                      >
+                        #{tag.data.name}
+                      </a>
+                    ),
+                )}
+              </div>
+            </>
+          )
+        }
       </div>
-    </div>
+    </header>
 
-    <div class="content prose dark:prose-invert prose-headings:tracking-tight">
+    <TableOfContents headings={headings} />
+
+    <div
+      class="prose max-w-none prose-neutral dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-pre:border prose-pre:border-border prose-pre:bg-accent/50 prose-img:rounded-sm"
+    >
       <slot />
     </div>
+
+    <nav class="mt-12 grid grid-cols-2 gap-4 border-t border-border pt-8">
+      {
+        prevPost ? (
+          <a
+            href={`/${prevPost.id}`}
+            class="group flex flex-col gap-2 rounded-sm border border-border p-4 transition-colors hover:border-primary hover:bg-accent"
+          >
+            <span class="flex items-center gap-1 text-xs text-muted-foreground">
+              <Icon name="tabler:arrow-left" class="h-4 w-4" />
+              上一篇
+            </span>
+            <span class="line-clamp-2 text-sm font-medium">
+              {prevPost.data.title}
+            </span>
+          </a>
+        ) : (
+          <div />
+        )
+      }
+      {
+        nextPost ? (
+          <a
+            href={`/${nextPost.id}`}
+            class="group flex flex-col gap-2 rounded-sm border border-border p-4 text-right transition-colors hover:border-primary hover:bg-accent"
+          >
+            <span class="flex items-center justify-end gap-1 text-xs text-muted-foreground">
+              下一篇
+              <Icon name="tabler:arrow-right" class="h-4 w-4" />
+            </span>
+            <span class="line-clamp-2 text-sm font-medium">
+              {nextPost.data.title}
+            </span>
+          </a>
+        ) : (
+          <div />
+        )
+      }
+    </nav>
   </article>
 </BaseLayout>
-
-<style>
-  .active {
-    color: red;
-  }
-</style>
 
 <script>
   function addIntersectionObserver() {

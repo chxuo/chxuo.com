@@ -1,23 +1,36 @@
 ---
 import CategoryPreview from "@/components/common/CategoryPreview.astro";
+import TagPreview from "@/components/common/TagPreview.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getCategoryMap } from "@/utils/post";
+import { getCategoryMap, getTags } from "@/utils/post";
 
 const categoryMap = await getCategoryMap();
 const categories = categoryMap.keys();
+const tagMap = await getTags();
+const tags = tagMap.keys();
 ---
 
-<BaseLayout>
-  <section
-    class="mt-7 grid grid-cols-1 max-md:space-y-4 md:grid-cols-2 md:space-x-4"
-  >
-    {
-      categories.map((category) => (
-        <CategoryPreview
-          category={category}
-          posts={categoryMap.get(category) || []}
-        />
-      ))
-    }
-  </section>
+<BaseLayout title="索引">
+  <div class="space-y-12">
+    <section>
+      <h2 class="mb-4 text-xl font-semibold">分类</h2>
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {
+          categories.map((category) => (
+            <CategoryPreview
+              category={category}
+              posts={categoryMap.get(category) || []}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-xl font-semibold">标签</h2>
+      <div class="flex flex-wrap gap-4">
+        {tags.map((tag) => <TagPreview tag={tag} cnt={tagMap.get(tag) || 0} />)}
+      </div>
+    </section>
+  </div>
 </BaseLayout>

@@ -13,23 +13,21 @@ const { friend } = Astro.props;
 <Card
   href={friend.data.homepage}
   title={friend.data.website}
-  class="flex items-center gap-3 px-4 py-4"
+  class="flex items-center gap-3 p-4"
 >
-  <div>
-    <Image
-      src={friend.data.avatar}
-      width={54}
-      height={54}
-      alt={`${friend.data.website}'s avatar`}
-      class={"rounded-full border-5 border-accent"}
-    />
-  </div>
-  <div class="flex flex-col gap-2">
-    <h2 class="font-medium">
+  <Image
+    src={friend.data.avatar}
+    width={48}
+    height={48}
+    alt={`${friend.data.website}'s avatar`}
+    class="rounded-full"
+  />
+  <div class="flex flex-col gap-1">
+    <h2 class="font-semibold">
       {friend.data.website}
     </h2>
-    <div class="text-sm">
+    <p class="text-sm text-muted-foreground">
       {friend.data.description}
-    </div>
+    </p>
   </div>
 </Card>

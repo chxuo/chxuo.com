@@ -21,10 +21,15 @@ const { tag } = Astro.props;
 const posts = await getPostsByTag(tag.data.name);
 ---
 
-<BaseLayout>
-  <h2 class="mt-7 flex items-center text-xl">
-    <Icon name={"tabler:hash"} class="text-gray-400" />
-    {tag.data.name}（共 {posts.length} 篇文章）
-  </h2>
-  <PostList posts={posts} />
+<BaseLayout title={`${tag.data.name} · 标签`}>
+  <div class="space-y-8">
+    <h2 class="flex items-center gap-2 text-xl font-semibold">
+      <Icon name="tabler:hash" class="h-5 w-5 text-muted-foreground" />
+      {tag.data.name}
+      <span class="text-sm font-normal text-muted-foreground"
+        >共 {posts.length} 篇</span
+      >
+    </h2>
+    <PostList posts={posts} />
+  </div>
 </BaseLayout>

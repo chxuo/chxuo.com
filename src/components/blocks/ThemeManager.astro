@@ -1,18 +1,32 @@
----
-type Props = {
-  defaultTheme?: "auto" | "dark" | "light" | undefined;
-};
+<script is:inline>
+  const getTheme = () => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  };
 
-const { defaultTheme = "auto" } = Astro.props;
----
+  const theme = getTheme();
 
-<script is:inline data-default-theme={defaultTheme}>
-  function applyTheme() {
-    localStorage.theme === "dark"
-      ? document.documentElement.classList.add("dark")
-      : document.documentElement.classList.remove("dark");
+  if (theme === "dark") {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
   }
 
-  document.addEventListener("astro:after-swap", applyTheme);
-  applyTheme();
+  if (typeof localStorage !== "undefined") {
+    localStorage.setItem("theme", theme);
+  }
+
+  document.addEventListener("astro:after-swap", () => {
+    const currentTheme = getTheme();
+    if (currentTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  });
 </script>

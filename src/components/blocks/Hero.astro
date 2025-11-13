@@ -1,37 +1,31 @@
 ---
 import siteConfig from "@/config/site";
+import { Icon } from "astro-icon/components";
 ---
 
-<section class="hero mt-7">
-  <p>
-    Hi，我是轻河，一名业余全栈开发者，希望成为独立开发者，能够做出一些有用或者有趣的小玩意儿。
-  </p>
-  <p>
-    目前热衷于探索 Web 技术和 AI
-    大模型，在这里主要是记录一些我的折腾笔记和技术随笔。
-  </p>
-  <p>
-    你可以通过 {
-      siteConfig.social?.map((item, index) => (
-        <>
-          {index > 0 ? "、" : ""}
-          <a
-            href={item.url}
-            title={item.name}
-            class="opacity-75 hover:opacity-100"
-          >
-            {item.name}
-          </a>
-        </>
+<section class="mb-12">
+  <h2 class="mb-4 text-2xl font-bold">Hi，我是轻河 👋</h2>
+  <div class="space-y-3 leading-relaxed text-muted-foreground">
+    <p>
+      一名业余全栈开发者，希望成为独立开发者，能够做出一些有用或者有趣的小玩意儿。
+    </p>
+    <p>
+      目前热衷于探索 Web 技术和 AI
+      大模型，在这里主要是记录一些我的折腾笔记和技术随笔。
+    </p>
+  </div>
+  <div class="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+    {
+      siteConfig.social?.map((item) => (
+        <a
+          href={item.url}
+          title={item.name}
+          class="inline-flex items-center gap-1.5 transition-colors hover:text-primary"
+        >
+          <Icon name={item.icon} class="h-4 w-4" />
+          <span>{item.name}</span>
+        </a>
       ))
-    } 找到我。
-  </p>
+    }
+  </div>
 </section>
-
-<style>
-  @reference "../../styles/global.css";
-
-  .hero p {
-    @apply mx-0 my-4 leading-7;
-  }
-</style>

@@ -11,24 +11,37 @@ interface Props {
 const { post } = Astro.props;
 ---
 
-<Card href={`/${post.id}`} title={post.data.title} class="group p-3">
+<Card
+  href={`/${post.id}`}
+  title={post.data.title}
+  class="group flex flex-col p-4"
+>
   {
     post.data.cover && (
-      <div class="h-32 overflow-hidden">
+      <div class="mb-3 h-40 overflow-hidden rounded-sm">
         <Image
           src={post.data.cover}
           alt={`${post.data.title}'s cover`}
-          class="min-h-32 transition-all duration-300 ease-linear group-hover:scale-110"
+          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
     )
   }
 
-  <h2 class="mt-2 min-w-0 shrink overflow-hidden text-nowrap text-ellipsis">
+  <h2 class="mb-2 line-clamp-2 text-lg leading-snug font-semibold">
     {post.data.title}
   </h2>
+
+  {
+    post.data.summary && (
+      <p class="mb-3 line-clamp-2 text-sm text-muted-foreground">
+        {post.data.summary}
+      </p>
+    )
+  }
+
   <time
-    class="shrink-0 text-sm tracking-tighter text-nowrap opacity-75"
+    class="mt-auto text-xs text-muted-foreground"
     datetime={post.data.createdAt.toISOString()}
   >
     {formatDate(post.data.createdAt)}

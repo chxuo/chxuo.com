@@ -10,8 +10,8 @@ export const getStaticPaths = (async () => {
     params: { slug: post.id },
     props: {
       post,
-      nextPost: index + 1 < posts.length ? posts[index + 1] : null,
-      prevPost: index - 1 >= 0 ? posts[index - 1] : null,
+      nextPost: index + 1 < posts.length ? posts[index + 1] : undefined,
+      prevPost: index - 1 >= 0 ? posts[index - 1] : undefined,
     },
   }));
 }) satisfies GetStaticPaths;
@@ -20,6 +20,11 @@ const { post, prevPost, nextPost } = Astro.props;
 const { Content, headings } = await render(post);
 ---
 
-<PostLayout post={post} headings={headings}>
+<PostLayout
+  post={post}
+  prevPost={prevPost}
+  nextPost={nextPost}
+  headings={headings}
+>
   <Content />
 </PostLayout>
