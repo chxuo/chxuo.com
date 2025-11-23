@@ -1,0 +1,59 @@
+---
+title: "重新安装 pip"
+description: "这篇文章是关于如何重新安装 pip，用户恢复由于某些原因导致的 pip 无法使用的问题。"
+createdAt: 2025-11-07
+category: "技术"
+tags: ["python", "备忘"]
+cover: "./images/reinstall-pip.webp"
+---
+
+之前在工作的时候，遇到过几次 pip 由于更新到不兼容的版本导致语法出现错误，pip 的所有子命令都无法运行，无法直接重新安装，这时候就需要用到 `get-pip.py` 脚本来手动安装。
+
+## `get-pip.py` 是什么
+
+简单来说，`get-pip.py` 是一个能够在尚未安装 pip 的 python 环境中安装 pip 的 python 脚本。
+
+脚本可以直接从 [https://bootstrap.pypa.io/](https://bootstrap.pypa.io/) 网站中下载到，打开网站基本的目录结构（这里主要关注 get-pip 相关的目录）：
+
+```shell
+├── pip
+│   ├── 2.6
+│   │   └── get-pip.py
+│   ├── 2.7
+│   │   └── get-pip.py
+│   ├── 3.2
+│   │   └── get-pip.py
+│   ├── ...
+│   ├── ...
+│   ├── 3.7
+│   │   └── get-pip.py
+│   ├── 3.8
+│   │   └── get-pip.py
+│   ├── zipapp/
+│   ├── get-pip.py
+│   └── pip.pyz
+├── virtualenv/
+├── bootstrap-buildout.py
+├── ez_setup.py
+├── get-pip.py
+└── virtualenv.pyz
+```
+
+可以看到，其中 2.6 到 3.8 是对应python版本的脚本，比如要给 python3.8 重写安装 pip, 就需要使用 `pip/3.8/get-pip.py` 这个脚本，那么更新的版本应该使用那个脚本呢，应该是使用最外层的就可以，脚本中写明了最小版本号是 3.9。
+
+## 基本的使用方法
+
+1. 指定 pip 版本安装:
+
+```shell
+python get-pip.py "pip < 21.0"
+python get-pip.py "pip == 21.0"
+```
+
+2. 指定从本地目录（默认是从 PyPI ）来安装:
+
+```shell
+python get-pip.py --no-index --find-links=/path/
+```
+
+关于脚本具体的用法和源码，可以查看 [get-pip](https://github.com/pypa/get-pip) 的 Github 仓库来了解更多。
