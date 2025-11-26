@@ -1,0 +1,26 @@
+---
+import Brand from "../blocks/Brand.astro";
+import ThemeToggle from "../common/ThemeToggle.astro";
+import MobileNav from "../blocks/MobileNav.astro";
+import Nav from "../blocks/Nav.astro";
+---
+
+<header
+  class="sticky top-0 z-50 max-w-screen overflow-x-hidden bg-background px-2 py-2"
+>
+  <div
+    class="mx-auto flex h-12 items-center justify-between gap-2 px-2 sm:gap-4 md:max-w-3xl"
+  >
+    <Brand />
+
+    <div class="flex-1"></div>
+
+    <Nav class="max-sm:hidden" />
+
+    <div class="flex items-center *:first:mr-2">
+      <!-- <span class="mx-2 flex h-4 w-px bg-border" /> -->
+      <ThemeToggle />
+      <MobileNav class="sm:hidden" />
+    </div>
+  </div>
+</header>

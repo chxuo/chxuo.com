@@ -14,12 +14,14 @@
     "@astrojs/mdx": "^4.3.12",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.0",
+    "astro-icon": "^1.1.5",
     "tailwindcss": "^4.1.17"
   },
   "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
   "devDependencies": {
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
+    "@iconify-json/tabler": "^1.2.23",
     "@tailwindcss/typography": "^0.5.19",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",

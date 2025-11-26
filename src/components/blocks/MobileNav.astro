@@ -1,0 +1,66 @@
+---
+import { NAV } from "@/config/site";
+import NavItem from "./NavItem.astro";
+import Button from "../ui/Button.astro";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<div class={className}>
+  <Button id="menuToggle" variant="ghost" size="icon">
+    <Icon name="tabler:menu-2" class="size-6" />
+  </Button>
+
+  <div id="overlay" class="fixed inset-0 top-16 z-40 hidden bg-background">
+  </div>
+
+  <nav
+    id="menu"
+    class:list={[
+      "fixed top-16 left-0 z-50 w-full translate-x-full space-y-3 border-t border-border bg-background px-3 py-2 shadow-xl transition-transform duration-500",
+      className,
+    ]}
+  >
+    {
+      NAV.map(({ title, href, icon }, index) => {
+        const active =
+          currentPath === href ||
+          (href === "/"
+            ? ["/", "/index"].includes(currentPath || "")
+            : currentPath?.startsWith(href));
+
+        return (
+          <NavItem title={title} icon={icon} href={href} active={active} />
+        );
+      })
+    }
+  </nav>
+</div>
+
+<script>
+  const btn = document.getElementById("menuToggle");
+  const menu = document.getElementById("menu");
+  const overlay = document.getElementById("overlay");
+
+  btn?.addEventListener("click", () => {
+    menu?.classList.toggle("translate-x-full");
+    overlay?.classList.toggle("hidden");
+
+    document.body.style.overflow = menu?.classList.contains("translate-x-full")
+      ? ""
+      : "hidden";
+  });
+
+  overlay?.addEventListener("click", () => {
+    menu?.classList.add("translate-x-full");
+    overlay.classList.add("hidden");
+
+    document.body.style.overflow = "";
+  });
+</script>
