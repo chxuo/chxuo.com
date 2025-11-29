@@ -1,7 +1,11 @@
 ---
-
+const year = new Date().getFullYear();
 ---
 
 <footer class="max-w-screen overflow-x-hidden px-2">
-  <div class="mx-auto pt-4 md:max-w-3xl">This is footer</div>
+  <div
+    class="mx-auto flex justify-center pt-4 text-sm text-accent-foreground md:max-w-3xl"
+  >
+    <span>© {year} chxuo.com</span>
+  </div>
 </footer>

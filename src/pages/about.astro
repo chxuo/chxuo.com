@@ -1,0 +1,49 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+const friends = await getCollection("friends");
+---
+
+<BaseLayout>
+  <div class="mx-auto space-y-16 py-24 md:max-w-3xl md:py-32">
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">关于作者</h2>
+      <div class="flex items-center gap-6">
+        <Image
+          src="/avatar.webp"
+          alt="author's avatar"
+          width={80}
+          height={80}
+          class="rounded-full"
+        />
+        <div>
+          <h2 class="mb-1 text-2xl font-bold">轻河</h2>
+          <p class="text-sm text-muted-foreground">
+            业余全栈开发者 · 爱折腾 · 新手 Blogger
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">关于本站</h2>
+      <div class="space-y-3 leading-relaxed text-muted-foreground">
+        <p>
+          尝试写博客好多年，搭建博客的各种平台和工具都玩过一遍，无论是
+          Wordpress、Typecho、Halo 和 Ghost 等动态网站平台，还是 Hexo、Hugo
+          之类的静态博客生成器，甚至尝试自己用 Python
+          写过，最后都是无疾而终，没留下什么好的内容。
+        </p>
+        <p>
+          这次使用 Astro
+          开发了本站，一个极简风格个人网站，希望能够更加专注与内容，留下一些有价值的内容。
+        </p>
+        <p>
+          在这里，主要会记录我的学习笔记、折腾记录、探索AI应用、生活日常，以及一些优质的网站和工具的分享。
+        </p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -14,7 +14,10 @@ import { ClientRouter } from "astro:transitions";
     <title>Astro</title>
     <ClientRouter />
   </head>
-  <body class="bg-background text-foreground">
+  <body
+    class="antialiased; bg-zinc-50 text-zinc-900 dark:bg-[#0a0a0a] dark:text-zinc-50"
+  >
+    <!-- <body class="bg-background text-foreground"> -->
     <Header />
     <main class="max-w-screen overflow-x-hidden px-2">
       <slot />

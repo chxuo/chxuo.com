@@ -7,8 +7,8 @@ export const NAV: NavItem[] = [
     icon: "tabler:home",
   },
   {
-    title: "文章",
-    href: "/index",
+    title: "博客",
+    href: "/blog",
     icon: "tabler:news",
   },
   {

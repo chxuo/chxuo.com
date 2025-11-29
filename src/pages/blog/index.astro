@@ -1,0 +1,39 @@
+---
+import BlogPostItem from "@/components/common/BlogPostItem.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getBlogPosts } from "@/utils/blog";
+
+const blogPosts = await getBlogPosts();
+---
+
+<BaseLayout>
+  <div class="mx-auto md:max-w-3xl">
+    <section id="blog" class="py-24 md:py-32">
+      <div
+        class="mb-8 flex flex-col justify-between gap-4 border-b border-zinc-100 pb-6 md:flex-row md:items-end dark:border-zinc-800"
+      >
+        <div>
+          <h2
+            class="mb-2 font-serif text-3xl font-medium text-zinc-900 md:text-4xl dark:text-zinc-50"
+          >
+            文章
+          </h2>
+          <p class="font-sans font-light text-zinc-500 dark:text-zinc-400">
+            记录点工作与生活的碎碎念。随便写写，您随便看看。
+          </p>
+        </div>
+      </div>
+
+      {
+        blogPosts.map((post, index) => (
+          <>
+            <BlogPostItem post={post} />
+            {index < blogPosts.length - 1 && (
+              <hr class="border-t border-zinc-100 dark:border-zinc-800" />
+            )}
+          </>
+        ))
+      }
+    </section>
+  </div>
+</BaseLayout>

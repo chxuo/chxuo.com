@@ -25,6 +25,7 @@ const blog = defineCollection({
       summary: z.string().optional().default(""),
       cover: image().optional(),
       draft: z.boolean().default(false),
+      new: z.boolean().default(false),
     }),
 });
 
@@ -55,9 +56,9 @@ const tags = defineCollection({
 const friends = defineCollection({
   loader: file("./src/content/miscs/friends.json"),
   schema: z.object({
-    website: z.string().max(64),
+    name: z.string().max(64),
     description: z.string().optional().describe("One line string"),
-    homepage: z.string().url(),
+    link: z.string().url(),
     avatar: z.string(),
   }),
 });

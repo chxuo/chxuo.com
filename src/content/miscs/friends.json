@@ -1,9 +1,9 @@
 [
   {
-    "website": "轻河的园子",
-    "slug": "chxuo",
-    "homepage": "https://chxuo.com",
+    "name": "轻河的园子",
     "description": "业余全栈开发者",
-    "avatar": "/avatar.webp"
+    "slug": "chxuo",
+    "link": "https://chxuo.com",
+    "avatar": "/favicon.svg"
   }
 ]

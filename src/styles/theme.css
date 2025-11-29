@@ -1,4 +1,6 @@
 :root {
+  --brand: oklch(0.629 0.187 252);
+
   /* white */
   --background: oklch(1 0 0);
 
@@ -45,8 +47,8 @@
   /* zinc-900 */
   --accent-foreground: oklch(0.21 0.006 285.885);
 
-  /* zinc-200 */
-  --border: oklch(0.92 0.004 286.32);
+  /* zinc-100 */
+  --border: oklch(96.7% 0.001 286.375);
 
   /* color-mix */
   --edge: color-mix(in oklab, var(--border) 64%, var(--background));
@@ -90,6 +92,8 @@
 }
 
 .dark {
+  --brand: oklch(0.836 0.112 252);
+
   /* zinc-950 */
   --background: oklch(0.141 0.005 285.823);
 
@@ -179,6 +183,7 @@
 }
 
 @theme inline {
+  --color-brand: var(--brand);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
