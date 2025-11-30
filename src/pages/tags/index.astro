@@ -1,0 +1,52 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { getBlogPosts } from "@/utils/blog";
+
+const tags = await getCollection("tags");
+const posts = await getBlogPosts();
+
+const getPostCountForTag = (slug: string) =>
+  posts.filter((post) => post.data.tags?.includes(slug)).length;
+---
+
+<BaseLayout title="标签 · chxuo.com" description="按照标签浏览本站的文章。">
+  <div class="mx-auto md:max-w-3xl">
+    <section class="py-24 md:py-32">
+      <div
+        class="mb-8 flex flex-col justify-between gap-4 border-b border-border pb-6 md:flex-row md:items-end"
+      >
+        <div>
+          <h1
+            class="mb-2 font-serif text-3xl font-medium text-foreground md:text-4xl"
+          >
+            标签
+          </h1>
+          <p class="font-sans text-sm text-muted-foreground">
+            一些更细粒度的内容索引。
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        {
+          tags.map((tag) => {
+            const count = getPostCountForTag(tag.data.slug);
+
+            return (
+              <a
+                href={`/tags/${tag.data.slug}`}
+                class="inline-flex items-center gap-2 rounded-full border border-border px-4 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:border-brand hover:text-brand"
+              >
+                <span>#{tag.data.slug}</span>
+                <span class="text-[10px] text-muted-foreground/70">
+                  {count} 篇
+                </span>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

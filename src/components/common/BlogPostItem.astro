@@ -8,6 +8,7 @@ interface Props {
 }
 
 const { post } = Astro.props;
+const slug = post.id.replace(/\.(md|mdx)$/, "");
 ---
 
 <!-- <a href={`/blog/${post.id}`} class="group/post flex items-center">
@@ -47,7 +48,7 @@ const { post } = Astro.props;
   {
     post.data.cover && (
       <a
-        href={`/blog/${post.id}`}
+        href={`/blog/${slug}`}
         class="w-full shrink-0 overflow-hidden rounded-sm bg-secondary md:w-56"
       >
         <Image
@@ -83,14 +84,14 @@ const { post } = Astro.props;
       <h3
         class="mb-3 font-serif text-2xl leading-tight font-medium text-foreground transition-colors group-hover:text-accent-foreground/70 md:text-3xl"
       >
-        <a href={`/blog/${post.id}`} class="focus:outline-none">
+        <a href={`/blog/${slug}`} class="focus:outline-none">
           {post.data.title}
         </a>
       </h3>
 
       {
         post.data.summary && (
-          <p class="mb-4 line-clamp-2 text-base leading-relaxed font-light text-zinc-500 md:mb-5 md:line-clamp-3 md:w-11/12">
+          <p class="mb-4 line-clamp-2 text-base leading-relaxed font-light text-muted-foreground md:mb-5 md:line-clamp-3 md:w-11/12">
             {post.data.summary}
           </p>
         )

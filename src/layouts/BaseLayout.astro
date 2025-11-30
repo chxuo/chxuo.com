@@ -3,21 +3,29 @@ import Footer from "@/components/layout/Footer.astro";
 import Header from "@/components/layout/Header.astro";
 import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "轻河 · chxuo.com",
+  description = "轻河的个人网站，记录折腾、学习与生活的点滴。",
+} = Astro.props as Props;
 ---
 
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
+    <title>{title}</title>
+    <meta name="description" content={description} />
     <ClientRouter />
   </head>
-  <body
-    class="antialiased; bg-zinc-50 text-zinc-900 dark:bg-[#0a0a0a] dark:text-zinc-50"
-  >
-    <!-- <body class="bg-background text-foreground"> -->
+  <body class="min-h-screen bg-background text-foreground antialiased">
     <Header />
     <main class="max-w-screen overflow-x-hidden px-2">
       <slot />

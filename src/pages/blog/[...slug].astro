@@ -1,0 +1,132 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import { getCollection, render } from "astro:content";
+import { formatDate } from "@/utils/date";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) =>
+    import.meta.env.PROD ? data.draft !== true : true,
+  );
+
+  return posts.map((post) => ({
+    params: {
+      slug: post.id.replace(/\.(md|mdx)$/, ""),
+    },
+  }));
+}
+
+const { slug } = Astro.params;
+const allPosts = await getCollection("blog", ({ data }) =>
+  import.meta.env.PROD ? data.draft !== true : true,
+);
+const post = allPosts.find(
+  (entry) => entry.id.replace(/\.(md|mdx)$/, "") === slug,
+);
+
+if (!post) {
+  throw new Error(`Post not found for slug: ${slug}`);
+}
+
+const { Content } = await render(post);
+const hasTags = post.data.tags && post.data.tags.length > 0;
+const categories = await getCollection("categories");
+const matchedCategory = categories.find(
+  (category) =>
+    category.data.slug === post.data.category ||
+    category.data.name === post.data.category,
+);
+---
+
+<BaseLayout
+  title={`${post.data.title} · 博客`}
+  description={post.data.summary || "来自轻河的博客文章。"}
+>
+  <article class="mx-auto max-w-3xl py-12 md:py-20">
+    <header class="mb-10 border-b border-border pb-6">
+      <div
+        class="mb-3 flex flex-wrap items-center gap-3 font-mono text-xs tracking-widest text-muted-foreground/80 uppercase"
+      >
+        {
+          matchedCategory && (
+            <>
+              <a
+                href={`/categories/${matchedCategory.data.slug}`}
+                class="font-medium text-brand hover:underline"
+              >
+                {matchedCategory.data.name}
+              </a>
+              <span class="text-muted-foreground/50">/</span>
+            </>
+          )
+        }
+        <time
+          datetime={post.data.createdAt.toISOString()}
+          class="text-muted-foreground"
+        >
+          {formatDate(post.data.createdAt)}
+        </time>
+
+        {
+          post.data.updatedAt && (
+            <span class="text-[10px] text-muted-foreground/60">
+              · 更新于 {formatDate(post.data.updatedAt)}
+            </span>
+          )
+        }
+      </div>
+
+      <h1
+        class="mb-4 font-serif text-3xl leading-tight font-medium text-foreground md:text-4xl"
+      >
+        {post.data.title}
+      </h1>
+
+      {
+        post.data.summary && (
+          <p class="max-w-2xl text-base leading-relaxed text-muted-foreground">
+            {post.data.summary}
+          </p>
+        )
+      }
+    </header>
+
+    {
+      post.data.cover && (
+        <figure class="mb-10 overflow-hidden rounded-lg border border-border bg-secondary/40">
+          <Image
+            src={post.data.cover}
+            alt={post.data.title}
+            class="h-auto w-full object-cover"
+          />
+        </figure>
+      )
+    }
+
+    <div
+      class="prose max-w-none text-base leading-relaxed prose-zinc dark:prose-invert"
+    >
+      <Content />
+    </div>
+
+    {
+      hasTags && (
+        <footer class="mt-10 border-t border-border pt-5">
+          <div class="flex flex-wrap items-center gap-3 text-sm">
+            <span class="font-mono text-xs tracking-widest text-muted-foreground/80 uppercase">
+              Tags
+            </span>
+            {post.data.tags.map((tag: string) => (
+              <a
+                href={`/tags/${tag}`}
+                class="rounded-full border border-border px-3 py-1 font-mono text-xs text-muted-foreground transition-colors hover:border-brand hover:text-brand"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
+        </footer>
+      )
+    }
+  </article>
+</BaseLayout>

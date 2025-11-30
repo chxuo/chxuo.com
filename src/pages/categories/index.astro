@@ -1,0 +1,65 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { getBlogPosts } from "@/utils/blog";
+
+const categories = await getCollection("categories");
+const posts = await getBlogPosts();
+
+const getPostCountForCategory = (slugOrName: string) =>
+  posts.filter(
+    (post) =>
+      post.data.category === slugOrName ||
+      post.data.category ===
+        categories.find((category) => category.data.slug === slugOrName)?.data
+          .name,
+  ).length;
+---
+
+<BaseLayout title="分类 · chxuo.com" description="按照分类浏览本站的文章。">
+  <div class="mx-auto md:max-w-3xl">
+    <section class="py-24 md:py-32">
+      <div
+        class="mb-8 flex flex-col justify-between gap-4 border-b border-border pb-6 md:flex-row md:items-end"
+      >
+        <div>
+          <h1
+            class="mb-2 font-serif text-3xl font-medium text-foreground md:text-4xl"
+          >
+            分类
+          </h1>
+          <p class="font-sans text-sm text-muted-foreground">
+            用不同的标签和主题，把内容归一归类。
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {
+          categories.map((category) => {
+            const count = getPostCountForCategory(category.data.slug);
+
+            return (
+              <a
+                href={`/categories/${category.data.slug}`}
+                class="group flex flex-col gap-2 rounded-lg border border-border bg-card/40 p-4 transition-colors hover:border-brand hover:bg-accent/10"
+              >
+                <h2 class="font-serif text-lg font-medium text-foreground group-hover:text-brand">
+                  {category.data.name}
+                </h2>
+                {category.data.description && (
+                  <p class="line-clamp-2 text-sm text-muted-foreground">
+                    {category.data.description}
+                  </p>
+                )}
+                <span class="mt-1 font-mono text-xs text-muted-foreground/80">
+                  {count} 篇文章
+                </span>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>
